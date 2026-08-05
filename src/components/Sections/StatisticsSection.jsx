@@ -29,7 +29,7 @@ export default function StatisticsSection() {
             className="relative overflow-hidden bg-black bg-[url('/images/globe.png')]  bg-no-repeat bg-cover bg-center "
         >
             <div className="absolute inset-0 bg-black/40 "></div>
-            <div className="relative mx-auto max-w-7xl px-6 pt-32 pb-24 z-50">
+            <div className="relative mx-auto max-w-7xl px-6 pt-32 pb-24 z-10">
                 {/* Heading */}
                 <div className="mx-auto max-w-3xl text-center">
                     <h2 className="text-2xl font-semibold leading-tight text-white md:text-3xl">
