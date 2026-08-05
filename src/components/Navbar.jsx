@@ -1,0 +1,132 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@heroui/react";
+import { Bars, Xmark, Briefcase } from "@gravity-ui/icons";
+
+
+const navLinks = [
+  {
+    name: "Browse Jobs",
+    href: "/jobs",
+  },
+  {
+    name: "Companies",
+    href: "/companies",
+  },
+  {
+    name: "Pricing",
+    href: "/pricing",
+  },
+];
+
+export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <nav className="sticky top-0 z-50 px-4 py-5">
+      <div className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/10 bg-[#1b1b1d]/80 px-6 py-4 backdrop-blur-xl">
+
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 to-violet-600">
+            <Briefcase size={20} className="text-white"/>
+          </div>
+
+          <h1 className="text-2xl font-extrabold tracking-tight">
+            <span className="text-blue-500">Talent</span>
+            <span className="text-orange-500">Nest</span>
+          </h1>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <ul className="hidden items-center gap-10 lg:flex">
+          {navLinks.map((item) => (
+            <li key={item.name}>
+              <Link
+                href={item.href}
+                className="text-sm font-medium text-gray-300 transition hover:text-white"
+              >
+                {item.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Desktop Actions */}
+        <div className="hidden items-center gap-5 lg:flex">
+          <Link
+            href="/login"
+            className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+          >
+            Sign In
+          </Link>
+
+          <Button
+            as={Link}
+            href="/register"
+            className="bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium text-white"
+            radius="md"
+          >
+            Get Started
+          </Button>
+        </div>
+
+        {/* Mobile Button */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="rounded-lg p-2 text-white lg:hidden"
+        >
+          {
+            isMenuOpen? <Xmark/>: <Bars/>
+          }
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`overflow-hidden transition-all duration-300 lg:hidden ${
+          isMenuOpen ? "mt-3 max-h-[500px]" : "max-h-0"
+        }`}
+      >
+        <div className="mx-auto max-w-7xl rounded-2xl border border-white/10 bg-[#1b1b1d]/95 p-6 backdrop-blur-xl">
+
+          <ul className="space-y-5">
+            {navLinks.map((item) => (
+              <li key={item.name}>
+                <Link
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block text-gray-300 transition hover:text-white"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8 flex flex-col gap-3">
+            <Link
+              href="/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-center font-medium text-violet-400"
+            >
+              Sign In
+            </Link>
+
+            <Button
+              as={Link}
+              href="/register"
+              onPress={() => setIsMenuOpen(false)}
+              className="bg-gradient-to-r from-blue-600 to-violet-600 text-white"
+            >
+              Get Started
+            </Button>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+  );
+}
