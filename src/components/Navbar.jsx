@@ -34,7 +34,7 @@ export default function Navbar() {
 
           <h1 className="text-2xl font-extrabold tracking-tight">
             <span className="text-blue-500">Talent</span>
-            <span className="text-orange-500">Nest</span>
+            <span className="text-orange-500">Gate</span>
           </h1>
         </Link>
 
