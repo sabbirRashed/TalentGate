@@ -45,7 +45,7 @@ export default function StatisticsSection() {
                     {stats.map((item) => (
                         <div
                             key={item.label}
-                            className="rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl"
+                            className="rounded-3xl border border-white/10 bg-white/4 p-8 backdrop-blur-xl"
                         >
                             <div className="mb-10 text-violet-300">
                                 {item.icon}
