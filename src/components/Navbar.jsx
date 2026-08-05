@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { Bars, Xmark, Briefcase } from "@gravity-ui/icons";
 
-
 const navLinks = [
   {
     name: "Browse Jobs",
@@ -27,11 +26,10 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 px-4 py-5">
       <div className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/10 bg-[#1b1b1d]/80 px-6 py-4 backdrop-blur-xl">
-
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 to-violet-600">
-            <Briefcase size={20} className="text-white"/>
+            <Briefcase size={20} className="text-white" />
           </div>
 
           <h1 className="text-2xl font-extrabold tracking-tight">
@@ -40,22 +38,26 @@ export default function Navbar() {
           </h1>
         </Link>
 
-        {/* Desktop Navigation */}
-        <ul className="hidden items-center gap-10 lg:flex">
-          {navLinks.map((item) => (
-            <li key={item.name}>
-              <Link
-                href={item.href}
-                className="text-sm font-medium text-gray-300 transition hover:text-white"
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Desktop Right Section */}
+        <div className="hidden items-center gap-8 lg:flex">
+          {/* Navigation */}
+          <ul className="flex items-center gap-10">
+            {navLinks.map((item) => (
+              <li key={item.name}>
+                <Link
+                  href={item.href}
+                  className="text-sm font-medium text-gray-300 transition hover:text-white"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-        {/* Desktop Actions */}
-        <div className="hidden items-center gap-5 lg:flex">
+          {/* Vertical Divider */}
+          <div className="h-6 w-px bg-white/15"></div>
+
+          {/* Sign In */}
           <Link
             href="/login"
             className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
@@ -63,6 +65,7 @@ export default function Navbar() {
             Sign In
           </Link>
 
+          {/* CTA */}
           <Button
             as={Link}
             href="/register"
@@ -77,10 +80,9 @@ export default function Navbar() {
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="rounded-lg p-2 text-white lg:hidden"
+          aria-label="Toggle menu"
         >
-          {
-            isMenuOpen? <Xmark/>: <Bars/>
-          }
+          {isMenuOpen ? <Xmark /> : <Bars />}
         </button>
       </div>
 
@@ -91,7 +93,6 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto max-w-7xl rounded-2xl border border-white/10 bg-[#1b1b1d]/95 p-6 backdrop-blur-xl">
-
           <ul className="space-y-5">
             {navLinks.map((item) => (
               <li key={item.name}>
@@ -106,7 +107,9 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="mt-8 flex flex-col gap-3">
+          <div className="my-6 h-px bg-white/10"></div>
+
+          <div className="flex flex-col gap-3">
             <Link
               href="/login"
               onClick={() => setIsMenuOpen(false)}
@@ -124,7 +127,6 @@ export default function Navbar() {
               Get Started
             </Button>
           </div>
-
         </div>
       </div>
     </nav>
