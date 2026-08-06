@@ -26,9 +26,9 @@ export default function RegisterPage() {
 
     return (
         <section className="min-h-screen bg-[#09090B] px-4 py-10">
-            <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] shadow-2xl backdrop-blur-xl">
+            <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-white/3 shadow-2xl backdrop-blur-xl">
                 <div className="grid lg:grid-cols-2">
-                    {/* ================= LEFT SIDE ================= */}
+                    {/* -----------------LEFT SIDE----------------- */}
 
                     <div
                         className="relative hidden min-h-[700px] lg:flex"
@@ -46,7 +46,7 @@ export default function RegisterPage() {
                                 <Link href="/">
                                     <h1 className="text-3xl font-extrabold">
                                         <span className="text-blue-500">Talent</span>
-                                        <span className="text-orange-500">Nest</span>
+                                        <span className="text-orange-500">Gate</span>
                                     </h1>
                                 </Link>
 

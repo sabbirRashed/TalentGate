@@ -10,13 +10,13 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <section className="min-h-screen bg-[#09090B] px-4 py-10 lg:px-8">
-            <div className="mx-auto flex max-w-4xl overflow-hidden rounded-3xl border border-white/10 bg-white/3  ">
+        <section className="min-h-screen bg-[#09090B] px-4 py-10">
+            <div className="mx-auto flex max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-white/3 backdrop-blur-xl ">
                 {/*-------------------- left side-------------------*/}
                 <div
-                    className="relative hidden w-1/2 lg:flex"
+                    className="relative min-h-[700px] hidden w-1/2 lg:flex"
                     style={{
-                        backgroundImage: "url('/images/globe2.png')",
+                        backgroundImage: "url('/images/globe.png')",
                         backgroundPosition: "center",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "cover",
@@ -24,54 +24,61 @@ export default function LoginPage() {
                 >
                     <div className="absolute inset-0 bg-black/70" />
 
-                    <div className="relative z-10 flex h-full flex-col justify-between p-12">
-                        {/* Logo */}
-                        <Link href="/">
-                            <h1 className="text-2xl font-extrabold">
-                                <span className="text-blue-500">Talent</span>
-                                <span className="text-orange-500">Gate</span>
-                            </h1>
-                        </Link>
-
-                        {/* Content */}
+                    <div className="relative z-10 flex h-full flex-col justify-between p-8">
                         <div>
-                            <span className="rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1 text-xs font-medium text-violet-300">
-                                Find Your Dream Career
-                            </span>
+                            {/* Logo */}
+                            <Link href="/">
+                                <h1 className="text-3xl font-extrabold">
+                                    <span className="text-blue-500">Talent</span>
+                                    <span className="text-orange-500">Gate</span>
+                                </h1>
+                            </Link>
 
-                            <h2 className="mt-4 text-3xl font-bold leading-tight text-white">
-                                Connecting Talent
-                                <br />
-                                with Opportunity.
-                            </h2>
+                            <div className="mt-20">
+                                <span className="rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm font-medium text-violet-300">
+                                    Find Your Dream Career
+                                </span>
 
-                            <p className="mt-4 max-w-md  leading-8 text-gray-300">
-                                Discover thousands of jobs, connect with top companies, and
-                                take the next step toward your career goals.
-                            </p>
+                                <h2 className="mt-6 text-4xl font-bold leading-tight text-white">
+                                    Connecting Talent
+                                    <br />
+                                    with Opportunity.
+                                </h2>
 
+                                <p className="mt-5 max-w-md  leading-8 text-gray-300">
+                                    Discover thousands of jobs, connect with top companies, and
+                                    take the next step toward your career goals.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div>
                             {/* Stats */}
-                            <div className="mt-8 grid grid-cols-3 gap-4">
+                            <div className=" grid grid-cols-3 gap-6">
                                 <div>
-                                    <h3 className="text-xl font-bold text-white">50K+</h3>
+                                    <h3 className="text-3xl font-bold text-white">50K+</h3>
                                     <p className="mt-1 text-gray-400">Jobs</p>
                                 </div>
 
                                 <div>
-                                    <h3 className="text-xl font-bold text-white">12K+</h3>
+                                    <h3 className="text-3xl font-bold text-white">12K+</h3>
                                     <p className="mt-1 text-gray-400">Companies</p>
                                 </div>
 
                                 <div>
-                                    <h3 className="text-xl font-bold text-white">2M+</h3>
+                                    <h3 className="text-3xl font-bold text-white">2M+</h3>
                                     <p className="mt-1 text-gray-400">Candidates</p>
                                 </div>
                             </div>
+
+                            <p className="mt-5 text-sm text-gray-500">
+                                © {new Date().getFullYear()} TalentGate
+                            </p>
                         </div>
 
-                        <p className="text-sm text-gray-500">
-                            © {new Date().getFullYear()} TalentNest
-                        </p>
+
                     </div>
                 </div>
 
