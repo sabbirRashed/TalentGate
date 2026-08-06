@@ -66,14 +66,14 @@ export default function Navbar() {
           </Link>
 
           {/* CTA */}
-          <Button
-            as={Link}
-            href="/register"
-            className="bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium text-white"
-            radius="md"
-          >
-            Get Started
-          </Button>
+          <Link href={'/register'}>
+            <Button
+              className="bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium text-white"
+              radius="md"
+            >
+              Get Started
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Button */}
@@ -88,9 +88,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`overflow-hidden transition-all duration-300 lg:hidden ${
-          isMenuOpen ? "mt-3 max-h-[500px]" : "max-h-0"
-        }`}
+        className={`overflow-hidden transition-all duration-300 lg:hidden ${isMenuOpen ? "mt-3 max-h-[500px]" : "max-h-0"
+          }`}
       >
         <div className="mx-auto max-w-7xl rounded-2xl border border-white/10 bg-[#1b1b1d]/95 p-6 backdrop-blur-xl">
           <ul className="space-y-5">

@@ -16,7 +16,7 @@ export default function LoginPage() {
                 <div
                     className="relative hidden w-1/2 lg:flex"
                     style={{
-                        backgroundImage: "url('/images/globe.png')",
+                        backgroundImage: "url('/images/globe2.png')",
                         backgroundPosition: "center",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "cover",
