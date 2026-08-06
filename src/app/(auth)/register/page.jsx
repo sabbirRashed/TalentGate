@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button, Input } from "@heroui/react";
+import { FcGoogle } from "react-icons/fc";
 
 export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
@@ -136,7 +137,7 @@ export default function RegisterPage() {
                                     type="password"
                                     label="Password"
                                     placeholder="••••••••"
-                                    variant="bordered"    
+                                    variant="bordered"
                                     className='w-full'
                                 />
 
@@ -176,18 +177,10 @@ export default function RegisterPage() {
                                 <Button
                                     fullWidth
                                     size="lg"
-                                    variant="bordered"
+                                    variant="outline"
                                     className="border-white/10"
-                                    startContent={
-                                        <Image
-                                            src="/images/google.png"
-                                            alt="Google"
-                                            width={20}
-                                            height={20}
-                                        />
-                                    }
                                 >
-                                    Continue with Google
+                                 <FcGoogle />   Continue with Google
                                 </Button>
 
                                 <p className="pt-2 text-center text-sm text-gray-400">

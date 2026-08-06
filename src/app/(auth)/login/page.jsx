@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button, Input } from "@heroui/react";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
+import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -166,19 +167,11 @@ export default function LoginPage() {
                             </div>
 
                             <Button
-                                variant="bordered"
+                                variant="outline"
                                 size="lg"
-                                className="w-full border-white/10"
-                                startContent={
-                                    <Image
-                                        src="/images/google.png"
-                                        alt="Google"
-                                        width={20}
-                                        height={20}
-                                    />
-                                }
+                                className="w-full border-white/10 "
                             >
-                                Continue with Google
+                                <FcGoogle /> Continue with Google
                             </Button>
 
                             <p className="pt-3 text-center text-sm text-gray-400">
