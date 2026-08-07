@@ -1,14 +1,50 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import { Button, Input } from "@heroui/react";
+import { Button, TextField, Label, Input, FieldError, Spinner } from "@heroui/react";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
+import { authClient } from "@/lib/auth-client";
+
+const inputClass =
+    "w-full border border-white/15 bg-white/5 focus:border-violet-500 transition-colors";
 
 export default function LoginPage() {
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
+    const [isPending, setIsPending] = useState(false);
+    const [formMessage, setFormMessage] = useState(null); // { type: "error" | "success", text: string }
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setFormMessage(null);
+
+        const form = new FormData(e.currentTarget);
+        const { email, password } = Object.fromEntries(form.entries());
+
+        await authClient.signIn.email(
+            { email, password },
+            {
+                onRequest: () => {
+                    setIsPending(true);
+                },
+                onSuccess: () => {
+                    setIsPending(false);
+                    setFormMessage({ type: "success", text: "Signed in! Redirecting…" });
+                    router.push("/");
+                },
+                onError: (ctx) => {
+                    setIsPending(false);
+                    setFormMessage({
+                        type: "error",
+                        text: ctx.error.message || "Invalid email or password.",
+                    });
+                },
+            }
+        );
+    };
 
     return (
         <section className="min-h-screen bg-[#09090B] px-4 py-10">
@@ -91,7 +127,7 @@ export default function LoginPage() {
                             <Link href="/">
                                 <h1 className="text-2xl font-extrabold">
                                     <span className="text-blue-500">Talent</span>
-                                    <span className="text-orange-500">Nest</span>
+                                    <span className="text-orange-500">Gate</span>
                                 </h1>
                             </Link>
                         </div>
@@ -107,34 +143,44 @@ export default function LoginPage() {
                         </div>
 
                         {/* Form */}
-                        <form className="flex flex-col gap-5">
-                            <Input
-                                label="Email Address"
-                                placeholder="Enter your email"
+                        <form onSubmit={handleLogin} className="flex flex-col gap-5">
+                            <TextField
+                                name="email"
                                 type="email"
-                                variant="bordered"
-                                size="lg"
-                                className="w-full"
-                            />
+                                isRequired
+                                validate={(value) =>
+                                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+                                        ? null
+                                        : "Enter a valid email address."
+                                }
+                            >
+                                <Label>Email Address</Label>
+                                <Input placeholder="Enter your email" className={inputClass} />
+                                <FieldError />
+                            </TextField>
 
-                            <div className="relative">
-                                <Input
-                                    label="Password"
-                                    placeholder="Enter your password"
-                                    type={showPassword ? "text" : "password"}
-                                    variant="bordered"
-                                    size="lg"
-                                    className="w-full pr-12"
-                                />
-
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-default-400"
-                                >
-                                    {showPassword ? <EyeSlash /> : <Eye />}
-                                </button>
-                            </div>
+                            <TextField
+                                name="password"
+                                type={showPassword ? "text" : "password"}
+                                isRequired
+                            >
+                                <Label>Password</Label>
+                                <div className="relative">
+                                    <Input
+                                        placeholder="Enter your password"
+                                        className={`${inputClass} pr-12`}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-default-400"
+                                        tabIndex={-1}
+                                    >
+                                        {showPassword ? <EyeSlash /> : <Eye />}
+                                    </button>
+                                </div>
+                                <FieldError />
+                            </TextField>
 
                             <div className="text-right">
                                 <Link
@@ -145,12 +191,33 @@ export default function LoginPage() {
                                 </Link>
                             </div>
 
+                            {formMessage && (
+                                <p
+                                    className={`text-sm px-4 py-2 rounded-xl  ${formMessage.type === "error"
+                                            ? "bg-rose-500/10 text-rose-500 border border-rose-500 "
+                                            : "bg-emerald-600/10 text-emerald-600 border border-emerald-600 "
+                                        }`}
+                                >
+                                    {formMessage.text}
+                                </p>
+                            )}
+
                             <Button
+                                type="submit"
+                                isPending={isPending}
+                                isDisabled={isPending}
                                 color="primary"
                                 size="lg"
                                 className="w-full bg-gradient-to-r from-blue-600 to-violet-600 text-white"
                             >
-                                Sign In
+                                {isPending ? (
+                                    <>
+                                        <Spinner color="current" size="sm" />
+                                        Signing in…
+                                    </>
+                                ) : (
+                                    "Sign In"
+                                )}
                             </Button>
 
                             {/* Divider */}

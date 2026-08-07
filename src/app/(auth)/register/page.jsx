@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button, TextField, Label, Input, FieldError } from "@heroui/react";
+import { Button, TextField, Label, Input, FieldError, Spinner } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 
@@ -26,7 +26,7 @@ export default function RegisterPage() {
             const { data, error } = await authClient.signUp.email(formData,
                 {
                     onSuccess: () => {
-                        setFormMessage({ type: "success", text: "Account created successfully!" });
+                        setFormMessage({ type: "success", text: "Wellcome, Successfully created your account." });
                     },
                     onError: (ctx) => {
                         setFormMessage({ type: "error", text: ctx.error.message || "Something went wrong. Please try again." });
@@ -183,7 +183,7 @@ export default function RegisterPage() {
 
 
                                 {
-                                    formMessage && <p className={`px-4 py-2 rounded-lg ${formMessage.type === 'success'? "bg-emerald-600/10 text-emerald-600 border border-emerald-600": "bg-rose-500/10 text-rose-500 border border-rose-500 "} `}>{formMessage.text}</p>
+                                    formMessage && <p className={`px-4 py-2 rounded-xl text-sm ${formMessage.type === 'success' ? "bg-emerald-600/10 text-emerald-600 border border-emerald-600" : "bg-rose-500/10 text-rose-500 border border-rose-500 "} `}>{formMessage.text}</p>
                                 }
 
                                 <Button
@@ -192,7 +192,11 @@ export default function RegisterPage() {
                                     isDisabled={loading}
                                     className="w-full bg-gradient-to-r from-blue-600 to-violet-600 text-white"
                                 >
-                                    {loading ? "Creating Account..." : "Create Account"}
+                                    {loading ? <>
+                                        <Spinner color="current" size="sm" />
+                                        Signing in…
+                                    </>
+                                        : "Create Account"}
                                 </Button>
                             </form>
 
