@@ -1,3 +1,4 @@
+import HeroContent from "@/components/HeroContent";
 import StatisticsSection from "@/components/Sections/StatisticsSection";
 import Image from "next/image";
 
