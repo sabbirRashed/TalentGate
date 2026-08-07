@@ -4,6 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { Bars, Xmark, Briefcase } from "@gravity-ui/icons";
+import { signOut, useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+
 
 const navLinks = [
   {
@@ -22,6 +25,20 @@ const navLinks = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const { data: session, isPending } = useSession();
+  const user = session?.user;
+
+  const handleLogOut = async()=>{
+    await signOut({
+      fetchOptions:{
+        onSuccess: ()=>{
+          router.push('/login')
+        }
+      }
+    })
+  }
 
   return (
     <nav className="sticky top-0 z-50 px-4 py-5">
@@ -57,23 +74,34 @@ export default function Navbar() {
           {/* Vertical Divider */}
           <div className="h-6 w-px bg-white/15"></div>
 
-          {/* Sign In */}
-          <Link
-            href="/login"
-            className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
-          >
-            Sign In
-          </Link>
+          {
+            user
+              ? <>
+                <span className="text-sm">Welcome,{" "}{user?.name.split(" ")[0]}👋</span>
+                <Button 
+                onClick={handleLogOut}
+                variant="ghost">Sign Out</Button>
+              </>
+              : <>
+                {/* Sign In */}
+                <Link
+                  href="/login"
+                  className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+                >
+                  Sign In
+                </Link>
 
-          {/* CTA */}
-          <Link href={'/register'}>
-            <Button
-              className="bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium text-white"
-              radius="md"
-            >
-              Get Started
-            </Button>
-          </Link>
+                {/* CTA */}
+                <Link href={'/register'}>
+                  <Button
+                    className="bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium text-white"
+                    radius="md"
+                  >
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+          }
         </div>
 
         {/* Mobile Button */}
