@@ -2,27 +2,40 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Button, Input } from "@heroui/react";
+import { Button, TextField, Label, Input, FieldError } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
+import { authClient } from "@/lib/auth-client";
+
+const inputClass =
+    "w-full border border-white/15 bg-white/5 focus:border-violet-500 transition-colors";
 
 export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
+    const [formMessage, setFormMessage] = useState(null);
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setFormMessage(null)
 
         setLoading(true);
 
         const form = new FormData(e.currentTarget);
-
         const formData = Object.fromEntries(form.entries());
 
-        console.log(formData);
-
-        // Better Auth Here
-
-        setLoading(false);
+        try {
+            const { data, error } = await authClient.signUp.email(formData,
+                {
+                    onSuccess: () => {
+                        setFormMessage({ type: "success", text: "Account created successfully!" });
+                    },
+                    onError: (ctx) => {
+                        setFormMessage({ type: "error", text: ctx.error.message || "Something went wrong. Please try again." });
+                    },
+                }
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -110,89 +123,111 @@ export default function RegisterPage() {
                                 </h2>
 
                                 <p className="mt-2 text-gray-400">
-                                    Join TalentNest and discover your next opportunity.
+                                    Join TalentGate and discover your next opportunity.
                                 </p>
                             </div>
 
                             <form onSubmit={handleRegister} className="space-y-5">
-                                <Input
+                                <TextField
                                     name="name"
-                                    label="Full Name"
-                                    placeholder="John Doe"
-                                    variant="bordered"
-                                    className='w-full'
-                                />
+                                    isRequired
+                                    validate={(value) =>
+                                        value.trim().length < 2
+                                            ? "Name must be at least 2 characters."
+                                            : null
+                                    }
+                                >
+                                    <Label>Full name</Label>
+                                    <Input
+                                        placeholder="Enter your full name"
+                                        className={inputClass}
+                                    />
+                                    <FieldError />
+                                </TextField>
 
-                                <Input
+                                <TextField
                                     name="email"
                                     type="email"
-                                    label="Email Address"
-                                    placeholder="john@example.com"
-                                    variant="bordered"
-                                    className='w-full'
-                                />
+                                    isRequired
+                                    validate={(value) =>
+                                        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+                                            ? null
+                                            : "Enter a valid email address."
+                                    }
+                                >
+                                    <Label>Email</Label>
+                                    <Input
+                                        placeholder="Enter your email"
+                                        className={inputClass}
+                                    />
+                                    <FieldError />
+                                </TextField>
 
-                                <Input
+                                <TextField
                                     name="password"
                                     type="password"
-                                    label="Password"
-                                    placeholder="••••••••"
-                                    variant="bordered"
-                                    className='w-full'
-                                />
+                                    isRequired
+                                    validate={(value) =>
+                                        value.length < 8
+                                            ? "Password must be at least 8 characters."
+                                            : null
+                                    }
+                                >
+                                    <Label>Password</Label>
+                                    <Input
+                                        placeholder="Enter your password"
+                                        className={inputClass}
+                                    />
+                                    <FieldError />
+                                </TextField>
 
-                                <Input
-                                    name="confirmPassword"
-                                    type="password"
-                                    label="Confirm Password"
-                                    placeholder="••••••••"
-                                    variant="bordered"
-                                    size={'lg'}
-                                    className='w-full'
-                                />
+
+                                {
+                                    formMessage && <p className={`px-4 py-2 rounded-lg ${formMessage.type === 'success'? "bg-emerald-600/10 text-emerald-600 border border-emerald-600": "bg-rose-500/10 text-rose-500 border border-rose-500 "} `}>{formMessage.text}</p>
+                                }
 
                                 <Button
                                     type="submit"
-                                    isLoading={loading}
-                                    fullWidth
-                                    className="bg-gradient-to-r from-blue-600 to-violet-600 text-white"
+                                    isPending={loading}
+                                    isDisabled={loading}
+                                    className="w-full bg-gradient-to-r from-blue-600 to-violet-600 text-white"
                                 >
-                                    Create Account
+                                    {loading ? "Creating Account..." : "Create Account"}
                                 </Button>
+                            </form>
 
-                                {/* Divider */}
+                            {/* Divider */}
 
-                                <div className="relative py-2">
-                                    <div className="absolute inset-0 flex items-center">
-                                        <div className="w-full border-t border-white/10"></div>
-                                    </div>
-
-                                    <div className="relative flex justify-center">
-                                        <span className="bg-[#09090B] px-4 text-sm text-gray-500">
-                                            OR
-                                        </span>
-                                    </div>
+                            <div className="relative py-2 mt-5">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-white/10"></div>
                                 </div>
 
-                                <Button
-                                    fullWidth
-                                    size="lg"
-                                    variant="outline"
-                                    className="border-white/10"
-                                >
-                                 <FcGoogle />   Continue with Google
-                                </Button>
+                                <div className="relative flex justify-center">
+                                    <span className="bg-[#09090B] px-4 text-sm text-gray-500">
+                                        OR
+                                    </span>
+                                </div>
+                            </div>
 
-                                <p className="pt-2 text-center text-sm text-gray-400">
-                                    Already have an account?{" "}
-                                    <Link
-                                        href="/login"
-                                        className="font-semibold text-violet-400 hover:text-violet-300"
-                                    >
-                                        Sign In
-                                    </Link>
-                                </p>
-                            </form>
+                            <Button
+                                fullWidth
+                                size="lg"
+                                variant="outline"
+                                className="border-white/10 mt-5"
+                            >
+                                <FcGoogle />   Continue with Google
+                            </Button>
+
+                            <p className="pt-2 text-center text-sm text-gray-400 mt-5">
+                                Already have an account?{" "}
+                                <Link
+                                    href="/login"
+                                    className="font-semibold text-violet-400 hover:text-violet-300"
+                                >
+                                    Sign In
+                                </Link>
+                            </p>
                         </div>
                     </div>
                 </div>
