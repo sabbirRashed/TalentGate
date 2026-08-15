@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button, TextField, Label, Input, FieldError, Spinner } from "@heroui/react";
+import { Button, TextField, Label, Input, FieldError, Spinner, Description, Radio, RadioGroup } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -23,9 +23,11 @@ export default function RegisterPage() {
 
         const form = new FormData(e.currentTarget);
         const formData = Object.fromEntries(form.entries());
+        const { name, email, password, role } = formData;
 
         try {
-            const { data, error } = await authClient.signUp.email(formData,
+            const { data, error } = await authClient.signUp.email(
+                { name, email, password, role },
                 {
                     onSuccess: () => {
                         setFormMessage({ type: "success", text: "Wellcome, Successfully created your account." });
@@ -45,8 +47,8 @@ export default function RegisterPage() {
         <section className="min-h-screen bg-[#09090B] px-4 py-10">
             <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-white/3 shadow-2xl backdrop-blur-xl">
                 <div className="grid lg:grid-cols-2">
-                    {/* -----------------LEFT SIDE----------------- */}
 
+                    {/* -----------------LEFT SIDE----------------- */}
                     <div
                         className="relative hidden min-h-[700px] lg:flex"
                         style={{
@@ -105,8 +107,8 @@ export default function RegisterPage() {
                         </div>
                     </div>
 
-                    {/* ----------------RIGHT SIDE-----------------*/}
 
+                    {/* ----------------RIGHT SIDE-----------------*/}
                     <div className="flex items-center justify-center p-8 md:p-10">
                         <div className="w-full max-w-md">
                             {/* Mobile Logo */}
@@ -131,6 +133,7 @@ export default function RegisterPage() {
                             </div>
 
                             <form onSubmit={handleRegister} className="space-y-5">
+                                {/* NAME FIELD */}
                                 <TextField
                                     name="name"
                                     isRequired
@@ -148,6 +151,7 @@ export default function RegisterPage() {
                                     <FieldError />
                                 </TextField>
 
+                                {/* EMAIL FIELD */}
                                 <TextField
                                     name="email"
                                     type="email"
@@ -166,6 +170,7 @@ export default function RegisterPage() {
                                     <FieldError />
                                 </TextField>
 
+                                {/* PASSWORD */}
                                 <TextField
                                     name="password"
                                     type="password"
@@ -184,6 +189,28 @@ export default function RegisterPage() {
                                     <FieldError />
                                 </TextField>
 
+                                {/* ROLE  */}
+                                <div className="flex flex-col gap-4">
+                                    <Label>Role</Label>
+                                    <RadioGroup defaultValue="seeker" name="role" orientation="horizontal">
+                                        <Radio value="seeker">
+                                            <Radio.Content>
+                                                <Radio.Control>
+                                                    <Radio.Indicator />
+                                                </Radio.Control>
+                                                Job Seeker
+                                            </Radio.Content>
+                                        </Radio>
+                                        <Radio value="recruiter">
+                                            <Radio.Content>
+                                                <Radio.Control>
+                                                    <Radio.Indicator />
+                                                </Radio.Control>
+                                                Recruiter
+                                            </Radio.Content>
+                                        </Radio>
+                                    </RadioGroup>
+                                </div>
 
                                 {
                                     formMessage && <p className={`px-4 py-2 rounded-xl text-sm ${formMessage.type === 'success' ? "bg-emerald-600/10 text-emerald-600 border border-emerald-600" : "bg-rose-500/10 text-rose-500 border border-rose-500 "} `}>{formMessage.text}</p>

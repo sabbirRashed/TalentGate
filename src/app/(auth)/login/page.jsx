@@ -23,6 +23,7 @@ export default function LoginPage() {
 
         const form = new FormData(e.currentTarget);
         const { email, password } = Object.fromEntries(form.entries());
+        
 
         await authClient.signIn.email(
             { email, password },
@@ -30,10 +31,13 @@ export default function LoginPage() {
                 onRequest: () => {
                     setIsPending(true);
                 },
-                onSuccess: () => {
+                onSuccess: async() => {
                     setIsPending(false);
+                    const session = await authClient.getSession();
+                    console.log(session, ":sesstion");
                     setFormMessage({ type: "success", text: "Signed in! Redirecting…" });
                     router.push("/");
+                    router.refresh();
                 },
                 onError: (ctx) => {
                     setIsPending(false);
@@ -194,8 +198,8 @@ export default function LoginPage() {
                             {formMessage && (
                                 <p
                                     className={`text-sm px-4 py-2 rounded-xl  ${formMessage.type === "error"
-                                            ? "bg-rose-500/10 text-rose-500 border border-rose-500 "
-                                            : "bg-emerald-600/10 text-emerald-600 border border-emerald-600 "
+                                        ? "bg-rose-500/10 text-rose-500 border border-rose-500 "
+                                        : "bg-emerald-600/10 text-emerald-600 border border-emerald-600 "
                                         }`}
                                 >
                                     {formMessage.text}

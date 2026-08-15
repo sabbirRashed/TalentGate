@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { Bars, Xmark, Briefcase } from "@gravity-ui/icons";
-import { signOut, useSession } from "@/lib/auth-client";
+import { authClient, signOut, } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 
@@ -25,15 +25,26 @@ const navLinks = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const router = useRouter();
 
-  const { data: session, isPending } = useSession();
+  const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
+  console.log("user:", user);
 
-  const handleLogOut = async()=>{
+  useEffect(() => {
+    if (!user) return;
+
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 5000)
+
+  }, [user])
+
+  const handleLogOut = async () => {
     await signOut({
-      fetchOptions:{
-        onSuccess: ()=>{
+      fetchOptions: {
+        onSuccess: () => {
           router.push('/login')
         }
       }
@@ -74,34 +85,39 @@ export default function Navbar() {
           {/* Vertical Divider */}
           <div className="h-6 w-px bg-white/15"></div>
 
-          {
-            user
-              ? <>
-                <span className="text-sm">Welcome,{" "}{user?.name.split(" ")[0]}👋</span>
-                <Button 
-                onClick={handleLogOut}
-                variant="ghost">Sign Out</Button>
-              </>
-              : <>
-                {/* Sign In */}
-                <Link
-                  href="/login"
-                  className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
-                >
-                  Sign In
-                </Link>
+          {isPending ? (
+            <span className="text-sm text-white/50">Loading...</span>
+          ) : user ? (
+            <>
+              {
+                showWelcome && <span className="text-sm">
+                  Welcome, {user.name?.split(" ")[0]} 👋
+                </span>
+              }
 
-                {/* CTA */}
-                <Link href={'/register'}>
-                  <Button
-                    className="bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium text-white"
-                    radius="md"
-                  >
-                    Get Started
-                  </Button>
-                </Link>
-              </>
-          }
+              <Button onClick={handleLogOut} variant="ghost">
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+              >
+                Sign In
+              </Link>
+
+              <Link href="/register">
+                <Button
+                  className="bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium text-white"
+                  radius="md"
+                >
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Button */}
