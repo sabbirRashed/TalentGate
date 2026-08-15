@@ -30,7 +30,7 @@ export default function Navbar() {
 
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
-  console.log("user:", user);
+  // console.log("user:", user);
 
   useEffect(() => {
     if (!user) return;

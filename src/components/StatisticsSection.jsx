@@ -1,7 +1,7 @@
 import { Briefcase, Factory, Magnifier, MapPin, Person, Star } from "@gravity-ui/icons";
 import { Button } from "@heroui/react";
 import { BiBuildings } from "react-icons/bi";
-import NewJobsBadge from "../newJobBadge";
+import NewJobsBadge from "./newJobBadge";
 
 const stats = [
     {
@@ -39,7 +39,7 @@ export default function StatisticsSection() {
             <div className="absolute inset-0 bg-black/20 "></div>
             <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-4 pt-20 text-center lg:pt-28">
                 {/* Badge */}
-                <NewJobsBadge/>
+                <NewJobsBadge />
 
                 {/* Heading */}
                 <h1 className="max-w-4xl text-4xl font-bold leading-tight text-white sm:text-5xl">

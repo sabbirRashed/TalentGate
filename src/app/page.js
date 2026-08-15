@@ -1,5 +1,5 @@
 import HeroContent from "@/components/HeroContent";
-import StatisticsSection from "@/components/Sections/StatisticsSection";
+import StatisticsSection from "@/components/StatisticsSection";
 import Image from "next/image";
 
 export default function Home() {
