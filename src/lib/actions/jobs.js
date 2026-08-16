@@ -1,0 +1,13 @@
+"use server"
+const serverUrl = NEXT_PUBLIC_SERVER_URL;
+export const postNewjob = async(newJobs)=>{
+    const res = await fetch(`${serverUrl}/api/jobs`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(newJobs)
+    });
+    const result = res.json();
+    return result();
+}
