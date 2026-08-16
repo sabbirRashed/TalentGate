@@ -11,7 +11,7 @@ const RecruiterDashboard = async () => {
     });
     const user = session?.user;
 
-    console.log("user:", user);
+    // console.log("user:", user);
     // Recruiter Dashboard Data
     const recruiterStats = [
         { title: "Total Job Posts", value: "48", icon: Briefcase },
