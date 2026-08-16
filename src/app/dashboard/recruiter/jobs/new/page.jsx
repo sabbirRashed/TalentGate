@@ -10,7 +10,8 @@ import {
     TextArea,
     Switch,
     Button,
-    Card
+    Card,
+    toast
 } from '@heroui/react';
 
 import {
@@ -22,7 +23,8 @@ import {
     ArrowLeft,
     Persons as UserGroup
 } from '@gravity-ui/icons';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
+import { postNewjob } from '@/lib/actions/jobs';
 
 export default function PostJobPage() {
     const [recruiterCompany] = useState({
@@ -33,7 +35,7 @@ export default function PostJobPage() {
 
     const [isRemote, setIsRemote] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submittedSuccess, setSubmittedSuccess] = useState(false);
+    // const [submittedSuccess, setSubmittedSuccess] = useState(false);
     const router = useRouter();
 
     // Form selection states
@@ -41,33 +43,43 @@ export default function PostJobPage() {
     const [type, setType] = useState('');
     const [currency, setCurrency] = useState('USD');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (!recruiterCompany.isApproved) return;
 
         setIsSubmitting(true);
-        const formData = new FormData(e.currentTarget);
-        const jobData = Object.fromEntries(formData.entries());
 
-        const payload = {
-            ...jobData,
-            category,
-            type,
-            currency,
-            companyId: recruiterCompany.id,
-            companyName: recruiterCompany.name,
-            isRemote: isRemote,
-            status: 'active',
-            isPublic: true,
-            createdAt: new Date().toISOString(),
-        };
+        try {
+            const form = e.currentTarget;
+            const formData = new FormData(form);
+            const jobData = Object.fromEntries(formData.entries());
 
-        console.log('Submitting Job Payload:', payload);
+            const payload = {
+                ...jobData,
+                category,
+                type,
+                currency,
+                companyId: recruiterCompany.id,
+                companyName: recruiterCompany.name,
+                isRemote,
+                status: "active",
+                isPublic: true,
+                createdAt: new Date().toISOString(),
+            };
 
-        setTimeout(() => {
+            const res = await postNewjob(payload);
+
+            if (res.insertedId) {
+                toast.success("Job posted successfully!");
+                form.reset();
+                router.push("/dashboard/recruiter");
+            }
+        } catch (error) {
+            toast.danger("Failed to post job. Please try again.");
+        } finally {
             setIsSubmitting(false);
-            setSubmittedSuccess(true);
-        }, 1200);
+        }
     };
 
     if (!recruiterCompany.isApproved) {
@@ -329,14 +341,14 @@ export default function PostJobPage() {
                             </div>
                         </div>
 
-                        {submittedSuccess && (
+                        {/* {submittedSuccess && (
                             <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-3">
                                 <Check className="w-5 h-5 text-emerald-400" />
                                 <span className="text-sm font-medium">
                                     Job posted successfully! Status is set to Active and is visible publicly.
                                 </span>
                             </div>
-                        )}
+                        )} */}
                     </div>
 
                     {/* Footer Actions */}

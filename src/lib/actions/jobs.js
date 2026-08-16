@@ -1,5 +1,5 @@
-"use server"
-const serverUrl = NEXT_PUBLIC_SERVER_URL;
+
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 export const postNewjob = async(newJobs)=>{
     const res = await fetch(`${serverUrl}/api/jobs`, {
         method: "POST",
@@ -9,5 +9,5 @@ export const postNewjob = async(newJobs)=>{
         body: JSON.stringify(newJobs)
     });
     const result = res.json();
-    return result();
+    return result;
 }
