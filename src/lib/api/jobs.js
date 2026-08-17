@@ -1,6 +1,6 @@
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
-const getCompanyJobs = async(companyId, status="active")=>{
+export const getCompanyJobs = async(companyId, status="active")=>{
     const res = await fetch(`${serverUrl}/api/jobs?companyId=${companyId}&status=${status}`);
     return res.json()
 }
