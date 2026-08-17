@@ -7,7 +7,7 @@ const DashboardLayout = ({children}) => {
             <div>
                 <DashboardSidebar/>
             </div>
-            <div className='flex-1'>{children}</div>
+            <div className='flex-1 '>{children}</div>
         </div>
     );
 };

@@ -21,7 +21,7 @@ const RecruiterDashboard = async () => {
     ];
 
     return (
-        <div className="p-10  mx-auto space-y-6">
+        <div className=" mx-auto space-y-6 p-4 md:p-8">
             {user && <h2 className="text-4xl">Welcome back, {user?.name}</h2>}
             <DashboardStats statsData={recruiterStats} />
         </div>

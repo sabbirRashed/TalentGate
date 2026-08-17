@@ -1,19 +1,19 @@
 
-import { LayoutSideContentLeft, Bell, Envelope, Gear, House, Magnifier, Person } from "@gravity-ui/icons";
+import { House, Briefcase, SquarePlus, Magnifier, Envelope, Gear, LayoutSideContentLeft } from "@gravity-ui/icons";
+import { BiBuildings } from "react-icons/bi";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 
 export function DashboardSidebar() {
     const navItems = [
         { icon: House, href: "/dashboard/recruiter", label: "Home" },
-        { icon: House, href: "/dashboard/recruiter/jobs", label: "Jobs" },
-        { icon: House, href: "/dashboard/recruiter/jobs/new", label: "Post A Job" },
-        { icon: Person, href: "/dashboard/companyProfile/", label: "Company Profile" },
+        { icon: Briefcase, href: "/dashboard/recruiter/jobs", label: "Jobs" },
+        { icon: SquarePlus, href: "/dashboard/recruiter/jobs/new", label: "Post A Job" },
+        { icon: BiBuildings, href: "/dashboard/recruiter/company", label: "Company Profile" },
         { icon: Magnifier, href: "/dashboard/recruiter", label: "Search" },
         { icon: Envelope, href: "/dashboard/recruiter", label: "Messages" },
         { icon: Gear, href: "/dashboard/recruiter/settings", label: "Settings" },
     ];
-
     const sidebarContent = <nav className="flex flex-col gap-1">
         {navItems.map((item) => (
             <Link

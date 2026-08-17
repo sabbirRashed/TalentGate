@@ -9,7 +9,7 @@ const RecruiterJobs = async () => {
   const companyJobs = (await getCompanyJobs(companyId)) || [];
 
   return (
-    <div className="space-y-6 px-6 py-10">
+    <div className="space-y-6 p-4 md:p-8">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
