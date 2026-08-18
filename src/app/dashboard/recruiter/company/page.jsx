@@ -15,7 +15,6 @@ import {
     Chip
 } from "@heroui/react";
 import {
-    Globe,
     Pin,
     ArrowUpFromLine,
     Pencil,
@@ -25,7 +24,6 @@ import {
 } from "@gravity-ui/icons";
 import { BiBuilding } from "react-icons/bi";
 
-// Common UI Styling variables based on your dark theme design
 const textInputClass = "bg-zinc-900 border border-zinc-800 focus:border-zinc-700 text-white placeholder:text-zinc-600 rounded-lg px-3 py-2 text-sm w-full outline-none transition-colors";
 const textAreaClass = "bg-zinc-900 border border-zinc-800 focus:border-zinc-700 text-white placeholder:text-zinc-600 rounded-lg p-3 text-sm w-full outline-none transition-colors resize-none";
 const selectBoxClass = "flex flex-col gap-1 w-full";
@@ -34,15 +32,12 @@ const popoverClasses = "bg-zinc-900 border border-zinc-800 rounded-lg p-1 shadow
 const listItemClasses = "px-3 py-2 text-sm hover:bg-zinc-800 rounded cursor-pointer transition-colors text-zinc-300";
 
 export default function CompanyProfile() {
-    // State for company data (Set initial value to null to test 'No Company' state)
     const [company, setCompany] = useState(false);
-
     const [isEditing, setIsEditing] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [errors, setErrors] = useState({});
     const [logoUrl, setLogoUrl] = useState(company?.logo || "");
 
-    // Handles Direct Image Upload to ImageBB API
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -52,7 +47,6 @@ export default function CompanyProfile() {
         formData.append("image", file);
 
         try {
-            // Replace YOUR_IMAGEBB_API_KEY with your actual key or process via API route
             const response = await fetch(`https://api.imgbb.com/1/upload?key=YOUR_IMAGEBB_API_KEY`, {
                 method: "POST",
                 body: formData,
@@ -60,26 +54,93 @@ export default function CompanyProfile() {
             const data = await response.json();
             if (data.success) {
                 setLogoUrl(data.data.url);
+                setErrors((prev) => ({ ...prev, logo: null }));
             } else {
-                alert("Image upload failed");
+                setErrors((prev) => ({ ...prev, logo: "Image upload failed. Try again." }));
             }
         } catch (err) {
             console.error("Upload error:", err);
+            setErrors((prev) => ({ ...prev, logo: "Upload error occurred." }));
         } finally {
             setIsUploading(false);
         }
     };
 
+    const validateForm = (data) => {
+        const newErrors = {};
+
+        // Company Name
+        if (!data.companyName || !data.companyName.trim()) {
+            newErrors.companyName = "Company name is required.";
+        }
+
+        // Website URL validation
+        const urlPattern = /^(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/;
+        if (!data.websiteUrl || !data.websiteUrl.trim()) {
+            newErrors.websiteUrl = "Website URL is required.";
+        } else if (!urlPattern.test(data.websiteUrl.trim())) {
+            newErrors.websiteUrl = "Enter a valid URL (e.g. www.company.com).";
+        }
+
+        // Industry
+        if (!data.industry) {
+            newErrors.industry = "Please select an industry.";
+        }
+
+        // Location
+        if (!data.location || !data.location.trim()) {
+            newErrors.location = "Location is required.";
+        }
+
+        // Employee Count
+        if (!data.employeeCount) {
+            newErrors.employeeCount = "Please select an employee range.";
+        }
+
+        // Logo Check
+        if (!logoUrl) {
+            newErrors.logo = "Company logo is required.";
+        }
+
+        // Description validation
+        if (!data.description || !data.description.trim()) {
+            newErrors.description = "Brief description is required.";
+        } else if (data.description.trim().length < 20) {
+            newErrors.description = "Description must be at least 20 characters long.";
+        }
+
+        return newErrors;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const updatedData = {
-            name: formData.get("companyName"),
-            website: formData.get("websiteUrl"),
+
+        const formValues = {
+            companyName: formData.get("companyName"),
+            websiteUrl: formData.get("websiteUrl"),
             industry: formData.get("industry"),
             location: formData.get("location"),
             employeeCount: formData.get("employeeCount"),
             description: formData.get("description"),
+        };
+
+        const validationErrors = validateForm(formValues);
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        setErrors({});
+
+        const updatedData = {
+            name: formValues.companyName,
+            website: formValues.websiteUrl,
+            industry: formValues.industry,
+            location: formValues.location,
+            employeeCount: formValues.employeeCount,
+            description: formValues.description,
             logo: logoUrl,
             status: company?.status || "Pending",
         };
@@ -88,7 +149,6 @@ export default function CompanyProfile() {
         setIsEditing(false);
     };
 
-    // Helper for status badge presentation
     const getStatusChip = (status) => {
         switch (status) {
             case "Approved":
@@ -103,7 +163,7 @@ export default function CompanyProfile() {
     // 1. STATE: NO COMPANY REGISTERED
     if (!company && !isEditing) {
         return (
-            <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-8 max-w-2xl mx-auto text-center space-y-4">
+            <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-8 max-w-2xl mx-auto text-center space-y-4 mt-12 md:mt-30">
                 <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center mx-auto text-zinc-400">
                     <BiBuilding size={24} />
                 </div>
@@ -112,7 +172,10 @@ export default function CompanyProfile() {
                     You haven't added a company profile yet. Register your company to start posting jobs and managing candidates.
                 </p>
                 <Button
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => {
+                        setErrors({});
+                        setIsEditing(true);
+                    }}
                     className="bg-white text-black font-semibold hover:bg-zinc-200 rounded-lg px-6 transition-colors h-10 mt-2"
                 >
                     Register Company
@@ -124,7 +187,7 @@ export default function CompanyProfile() {
     // 2. STATE: VIEW COMPANY DETAILS
     if (company && !isEditing) {
         return (
-            <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-6 max-w-3xl mx-auto space-y-6">
+            <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-6 max-w-3xl mx-auto space-y-6 mt-12 md:mt-30">
                 <div className="flex justify-between items-start border-b border-zinc-900 pb-4">
                     <div className="flex items-center gap-4">
                         {company.logo ? (
@@ -145,7 +208,11 @@ export default function CompanyProfile() {
                         </div>
                     </div>
                     <Button
-                        onClick={() => { setLogoUrl(company.logo); setIsEditing(true); }}
+                        onClick={() => {
+                            setLogoUrl(company.logo);
+                            setErrors({});
+                            setIsEditing(true);
+                        }}
                         variant="bordered"
                         className="border-zinc-800 text-zinc-300 hover:bg-zinc-900 rounded-lg px-4 font-medium h-9 text-sm flex items-center gap-2"
                     >
@@ -179,7 +246,7 @@ export default function CompanyProfile() {
 
     // 3. STATE: FORM (REGISTER / EDIT)
     return (
-        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-6 max-w-3xl mx-auto">
+        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-6 max-w-3xl mx-auto mt-12 md:30">
             <Form onSubmit={handleSubmit} className="space-y-6" validationErrors={errors} validationBehavior="aria">
                 <Fieldset className="space-y-6 w-full">
                     <legend className="text-lg font-medium text-zinc-300 border-b border-zinc-900 w-full pb-2 mb-2">
@@ -190,11 +257,11 @@ export default function CompanyProfile() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <TextField name="companyName" defaultValue={company?.name} isInvalid={!!errors.companyName} className="flex flex-col gap-1 w-full">
                             <Label className="text-zinc-400 font-medium text-sm">Company Name</Label>
-                            <Input placeholder="e.g. Acme Corp" className={textInputClass} required />
-                            {errors.companyName && <FieldError className="text-xs text-danger mt-1">{errors.companyName}</FieldError>}
+                            <Input placeholder="e.g. Acme Corp" className={textInputClass} />
+                            {errors.companyName && <FieldError className="text-xs text-red-500 mt-1">{errors.companyName}</FieldError>}
                         </TextField>
 
-                        <Select className={selectBoxClass} name="industry" defaultSelectedKeys={[company?.industry || "technology"]}>
+                        <Select className={selectBoxClass} name="industry" defaultSelectedKeys={[company?.industry || "technology"]} isInvalid={!!errors.industry}>
                             <Label className="text-zinc-400 font-medium text-sm mb-1 block">Industry / Category</Label>
                             <Select.Trigger className={triggerClasses}>
                                 <Select.Value className="text-white placeholder:text-zinc-600" />
@@ -208,31 +275,34 @@ export default function CompanyProfile() {
                                     <ListBox.Item id="marketing" className={listItemClasses} textValue="Marketing">Marketing</ListBox.Item>
                                 </ListBox>
                             </Select.Popover>
+                            {errors.industry && <span className="text-xs text-red-500 mt-1">{errors.industry}</span>}
                         </Select>
                     </div>
 
                     {/* Row 2: Website URL & Location */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <TextField name="websiteUrl" defaultValue={company?.website} className="flex flex-col gap-1 w-full">
+                        <TextField name="websiteUrl" defaultValue={company?.website} isInvalid={!!errors.websiteUrl} className="flex flex-col gap-1 w-full">
                             <Label className="text-zinc-400 font-medium text-sm">Website URL</Label>
                             <div className="flex items-center">
                                 <span className="bg-zinc-800 text-zinc-400 text-sm px-3 py-2 rounded-l-lg border border-r-0 border-zinc-800">https://</span>
                                 <Input placeholder="www.company.com" className={`${textInputClass} rounded-l-none`} />
                             </div>
+                            {errors.websiteUrl && <FieldError className="text-xs text-red-500 mt-1">{errors.websiteUrl}</FieldError>}
                         </TextField>
 
-                        <TextField name="location" defaultValue={company?.location} className="flex flex-col gap-1 w-full">
+                        <TextField name="location" defaultValue={company?.location} isInvalid={!!errors.location} className="flex flex-col gap-1 w-full">
                             <Label className="text-zinc-400 font-medium text-sm">Location</Label>
                             <div className="relative flex items-center">
                                 <Pin size={16} className="absolute left-3 text-zinc-600 pointer-events-none z-10" />
                                 <Input placeholder="City, Country" className={`${textInputClass} pl-10`} />
                             </div>
+                            {errors.location && <FieldError className="text-xs text-red-500 mt-1">{errors.location}</FieldError>}
                         </TextField>
                     </div>
 
                     {/* Row 3: Employee Count & Logo Upload */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                        <Select className={selectBoxClass} name="employeeCount" defaultSelectedKeys={[company?.employeeCount || "1-10"]}>
+                        <Select className={selectBoxClass} name="employeeCount" defaultSelectedKeys={[company?.employeeCount || "1-10"]} isInvalid={!!errors.employeeCount}>
                             <Label className="text-zinc-400 font-medium text-sm mb-1 block">Employee Count Range</Label>
                             <Select.Trigger className={triggerClasses}>
                                 <Select.Value />
@@ -246,13 +316,14 @@ export default function CompanyProfile() {
                                     <ListBox.Item id="201+" className={listItemClasses} textValue="201+ employees">201+ employees</ListBox.Item>
                                 </ListBox>
                             </Select.Popover>
+                            {errors.employeeCount && <span className="text-xs text-red-500 mt-1">{errors.employeeCount}</span>}
                         </Select>
 
-                        {/* Custom File Upload Component matching the image design */}
+                        {/* File Upload Component with Validation */}
                         <div className="flex flex-col gap-1 w-full">
                             <Label className="text-zinc-400 font-medium text-sm">Company Logo</Label>
                             <div className="flex items-center gap-3">
-                                <label className="relative flex flex-col items-center justify-center w-16 h-16 bg-zinc-900 border border-dashed border-zinc-700 hover:border-zinc-500 rounded-lg cursor-pointer transition-colors group">
+                                <label className={`relative flex flex-col items-center justify-center w-16 h-16 bg-zinc-900 border ${errors.logo ? "border-red-500" : "border-dashed border-zinc-700 hover:border-zinc-500"} rounded-lg cursor-pointer transition-colors group`}>
                                     <ArrowUpFromLine size={18} className="text-zinc-400 group-hover:text-white transition-colors" />
                                     <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={isUploading} />
                                 </label>
@@ -264,13 +335,15 @@ export default function CompanyProfile() {
                                     {logoUrl && <span className="text-xs text-emerald-400 mt-1">✓ Logo attached</span>}
                                 </div>
                             </div>
+                            {errors.logo && <span className="text-xs text-red-500 mt-1">{errors.logo}</span>}
                         </div>
                     </div>
 
                     {/* Row 4: Description */}
-                    <TextField name="description" defaultValue={company?.description} className="flex flex-col gap-1 w-full">
+                    <TextField name="description" defaultValue={company?.description} isInvalid={!!errors.description} className="flex flex-col gap-1 w-full">
                         <Label className="text-zinc-400 font-medium text-sm">Brief Description</Label>
                         <TextArea placeholder="Tell us about your company's mission and culture..." rows={4} className={textAreaClass} />
+                        {errors.description && <FieldError className="text-xs text-red-500 mt-1">{errors.description}</FieldError>}
                     </TextField>
                 </Fieldset>
 
@@ -280,7 +353,10 @@ export default function CompanyProfile() {
                         <Button
                             type="button"
                             variant="bordered"
-                            onClick={() => setIsEditing(false)}
+                            onClick={() => {
+                                setErrors({});
+                                setIsEditing(false);
+                            }}
                             className="border-zinc-800 text-zinc-300 hover:bg-zinc-900 rounded-lg px-6 font-medium h-11"
                         >
                             Cancel
