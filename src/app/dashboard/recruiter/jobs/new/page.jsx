@@ -272,8 +272,7 @@ export default function PostJobPage() {
                                         <Input
                                             name="location"
                                             placeholder={isRemote ? "Worldwide / Remote" : "City, Country (e.g. San Francisco, CA)"}
-                                            disabled={isRemote}
-                                            required={!isRemote}
+                                            required
                                             className="bg-zinc-900/90 border border-zinc-700/70 text-white rounded-lg p-2.5 pl-9 text-sm placeholder:text-zinc-500 w-full disabled:opacity-50"
                                         />
                                         <Pin className="w-4 h-4 text-zinc-400 absolute left-3 top-3" />

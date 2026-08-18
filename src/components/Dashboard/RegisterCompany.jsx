@@ -108,7 +108,7 @@ export default function CompanyForm({ company }) {
 
                 <Select
                     name="industry"
-                    defaultValue={company?.industry ?? "Technology"}
+                    defaultSelectedKey={company?.industry ?? "Technology"}
                 >
                     <Label>Industry / Category</Label>
                     <Select.Trigger className={inputClass}>
@@ -151,7 +151,7 @@ export default function CompanyForm({ company }) {
 
                 <Select
                     name="employeeCount"
-                    defaultValue={company?.employeeCount ?? "1-10 employees"}
+                    defaultSelectedKey={company?.employeeCount ?? "1-10 employees"}
                 >
                     <Label>Employee Count Range</Label>
                     <Select.Trigger className={inputClass}>
