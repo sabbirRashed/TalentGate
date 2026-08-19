@@ -34,9 +34,9 @@ const triggerClasses = "bg-zinc-900 border border-zinc-800 text-white rounded-lg
 const popoverClasses = "bg-zinc-900 border border-zinc-800 rounded-lg p-1 shadow-xl text-white";
 const listItemClasses = "px-3 py-2 text-sm hover:bg-zinc-800 rounded cursor-pointer transition-colors text-zinc-300";
 
-export default function CompanyProfile({recruiter}) {
+export default function CompanyProfile({recruiter, recruiterCompany}) {
      console.log('userSession:', recruiter);
-    const [company, setCompany] = useState(false);
+    const [company, setCompany] = useState(recruiterCompany);
     const [isEditing, setIsEditing] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -199,7 +199,7 @@ export default function CompanyProfile({recruiter}) {
     // 2. STATE: VIEW COMPANY DETAILS
     if (company && !isEditing) {
         return (
-            <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-6 max-w-3xl mx-auto space-y-6 mt-12 md:mt-30">
+            <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-6 max-w-4xl mx-auto space-y-6 mt-12 md:mt-30">
                 <div className="flex justify-between items-start border-b border-zinc-900 pb-4">
                     <div className="flex items-center gap-4">
                         {company.logo ? (
