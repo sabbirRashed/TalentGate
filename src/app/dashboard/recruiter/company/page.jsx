@@ -12,7 +12,8 @@ import {
     Select,
     ListBox,
     Button,
-    Chip
+    Chip,
+    toast
 } from "@heroui/react";
 import {
     Pin,
@@ -20,9 +21,11 @@ import {
     Pencil,
     Check,
     Clock,
-    Xmark
+    Xmark,
+    Globe
 } from "@gravity-ui/icons";
 import { BiBuilding } from "react-icons/bi";
+import { createNewCompany } from "@/lib/actions/companies";
 
 const textInputClass = "bg-zinc-900 border border-zinc-800 focus:border-zinc-700 text-white placeholder:text-zinc-600 rounded-lg px-3 py-2 text-sm w-full outline-none transition-colors";
 const textAreaClass = "bg-zinc-900 border border-zinc-800 focus:border-zinc-700 text-white placeholder:text-zinc-600 rounded-lg p-3 text-sm w-full outline-none transition-colors resize-none";
@@ -38,6 +41,7 @@ export default function CompanyProfile() {
     const [errors, setErrors] = useState({});
     const [logoUrl, setLogoUrl] = useState(company?.logo || "");
 
+
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -47,10 +51,12 @@ export default function CompanyProfile() {
         formData.append("image", file);
 
         try {
-            const response = await fetch(`https://api.imgbb.com/1/upload?key=YOUR_IMAGEBB_API_KEY`, {
+            const uploadImageAPI = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${uploadImageAPI}`, {
                 method: "POST",
                 body: formData,
             });
+
             const data = await response.json();
             if (data.success) {
                 setLogoUrl(data.data.url);
@@ -112,7 +118,7 @@ export default function CompanyProfile() {
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
 
@@ -134,7 +140,7 @@ export default function CompanyProfile() {
 
         setErrors({});
 
-        const updatedData = {
+        const newCompany = {
             name: formValues.companyName,
             website: formValues.websiteUrl,
             industry: formValues.industry,
@@ -142,10 +148,14 @@ export default function CompanyProfile() {
             employeeCount: formValues.employeeCount,
             description: formValues.description,
             logo: logoUrl,
-            status: company?.status || "Pending",
+            status: company?.status || "pending",
         };
+        setCompany(newCompany);
 
-        setCompany(updatedData);
+        const payload = await createNewCompany(newCompany);
+        if (payload.inserted) {
+            toast.success("Company profile created successfully!");
+        }
         setIsEditing(false);
     };
 
@@ -202,8 +212,9 @@ export default function CompanyProfile() {
                                 <h2 className="text-xl font-semibold text-white">{company.name}</h2>
                                 {getStatusChip(company.status)}
                             </div>
+                            
                             <a href={`https://${company.website}`} target="_blank" rel="noreferrer" className="text-xs text-zinc-400 hover:text-white transition-colors">
-                                https://{company.website}
+                               https://{company.website}
                             </a>
                         </div>
                     </div>
