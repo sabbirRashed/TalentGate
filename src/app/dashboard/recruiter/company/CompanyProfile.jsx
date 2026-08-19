@@ -35,7 +35,7 @@ const popoverClasses = "bg-zinc-900 border border-zinc-800 rounded-lg p-1 shadow
 const listItemClasses = "px-3 py-2 text-sm hover:bg-zinc-800 rounded cursor-pointer transition-colors text-zinc-300";
 
 export default function CompanyProfile({recruiter}) {
-    
+     console.log('userSession:', recruiter);
     const [company, setCompany] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -129,7 +129,7 @@ export default function CompanyProfile({recruiter}) {
             industry: formData.get("industry"),
             location: formData.get("location"),
             employeeCount: formData.get("employeeCount"),
-            description: formData.get("description"),
+            description: formData.get("description")       
         };
 
         const validationErrors = validateForm(formValues);
@@ -150,6 +150,7 @@ export default function CompanyProfile({recruiter}) {
             description: formValues.description,
             logo: logoUrl,
             status: company?.status || "pending",
+            recruiterId: recruiter.id,
         };
         setCompany(newCompany);
 
