@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button, Avatar } from '@heroui/react';
-import { LocationPin, Briefcase, Display, ArrowRight } from '@gravity-ui/icons';
+import { MapPin, Briefcase, Display, ArrowRight } from '@gravity-ui/icons';
 
 export default function JobCard({ job = {} }) {
     // Destructure with default fallback values
@@ -15,6 +15,7 @@ export default function JobCard({ job = {} }) {
         responsibilities = '',
         isRemote = false,
         type = 'full-time',
+        companyLogo = '',
     } = job;
 
     // Format currency range dynamically
@@ -28,11 +29,11 @@ export default function JobCard({ job = {} }) {
         <Card className="max-w-md bg-neutral-900 border border-neutral-800 text-neutral-100 rounded-3xl p-6 shadow-xl hover:border-neutral-700 transition-colors">
             {/* Header: Company Logo & Title */}
             <Card.Header className="flex flex-row items-center gap-4 p-0 mb-4 bg-transparent border-none">
-                <Avatar
-                    src={`/logos/${companyName.toLowerCase().replace(/\s+/g, '-')}.svg`}
-                    fallback={companyName.charAt(0)}
-                    className="w-12 h-12 rounded-2xl bg-neutral-800 text-white font-bold shrink-0"
-                />
+                <Avatar className="w-12 h-12 rounded-2xl bg-neutral-800 text-white font-bold shrink-0">
+                    <Avatar.Image src={companyLogo} alt={companyName} />
+                    <Avatar.Fallback>{companyName.charAt(0)}</Avatar.Fallback>
+                </Avatar>
+
                 <div className="flex flex-col min-w-0">
                     <Card.Title className="text-xl font-bold tracking-tight text-white m-0 truncate">
                         {title}
@@ -52,7 +53,7 @@ export default function JobCard({ job = {} }) {
                 <div className="flex flex-wrap gap-2 pt-1">
                     {/* Location Chip */}
                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-800/80 border border-neutral-700/50 text-xs font-medium text-neutral-300">
-                        <LocationPin className="w-3.5 h-3.5 text-pink-400" />
+                        <MapPin className="w-3.5 h-3.5 text-pink-400" />
                         <span>{location}</span>
                     </div>
 

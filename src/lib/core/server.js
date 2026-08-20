@@ -8,6 +8,7 @@ export const serverFetch = async(path)=>{
     // handle 401
     return res.json();
 }
+
 export const serverMutation = async(path, data)=>{
     const res = await fetch(`${serverUrl}${path}`, {
         method: "POST",
