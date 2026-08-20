@@ -1,15 +1,13 @@
 import { DashboardStats } from '@/components/Dashboard/DashboardStats';
 import { auth } from '@/lib/auth';
+import { getUserSession } from '@/lib/core/session';
 import { Briefcase, CircleCheck, Persons, Thunderbolt } from '@gravity-ui/icons';
 import { headers } from 'next/headers';
 import React from 'react';
 
 const RecruiterDashboard = async () => {
 
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
-    const user = session?.user;
+    const user = await getUserSession();
 
     // console.log("user:", user);
     // Recruiter Dashboard Data
@@ -22,8 +20,12 @@ const RecruiterDashboard = async () => {
 
     return (
         <div className=" mx-auto space-y-6 p-4 md:p-8">
-            {user && <h2 className="text-4xl">Welcome back, {user?.name}</h2>}
-            <DashboardStats statsData={recruiterStats} />
+            {user && <>
+                <h2 className="text-3xl">Welcome back, {user?.name}!</h2>
+                <DashboardStats statsData={recruiterStats} />
+            </>
+            }
+
         </div>
     );
 };

@@ -23,16 +23,10 @@ import {
     ArrowLeft,
     Persons as UserGroup
 } from '@gravity-ui/icons';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { postNewjob } from '@/lib/actions/jobs';
 
 export default function PostJobForm({company}) {
-
-    const [recruiterCompany] = useState({
-        id: 'comp_98765',
-        name: 'HireLoop Inc.',
-        isApproved: true,
-    });
 
     const [isRemote, setIsRemote] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,7 +41,7 @@ export default function PostJobForm({company}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!recruiterCompany.isApproved) return;
+        // if (!company.isApproved) return;
 
         setIsSubmitting(true);
 
@@ -61,12 +55,12 @@ export default function PostJobForm({company}) {
                 category,
                 type,
                 currency,
-                companyId: recruiterCompany.id,
-                companyName: recruiterCompany.name,
+                companyId: company._id,
+                companyName: company.name,
+                companyLogo: company.logo,
                 isRemote,
                 status: "active",
                 isPublic: true,
-                createdAt: new Date().toISOString(),
             };
 
             const res = await postNewjob(payload);
@@ -83,23 +77,24 @@ export default function PostJobForm({company}) {
         }
     };
 
-    if (!recruiterCompany.isApproved) {
-        return (
-            <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6">
-                <Card className="max-w-md w-full bg-zinc-900 border border-zinc-800 text-center p-6 rounded-2xl">
-                    <div className="space-y-4">
-                        <div className="w-12 h-12 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto">
-                            <UserGroup className="w-6 h-6" />
-                        </div>
-                        <h2 className="text-xl font-semibold">Company Approval Pending</h2>
-                        <p className="text-sm text-zinc-400">
-                            Your company account must be approved before you can post new job listings.
-                        </p>
-                    </div>
-                </Card>
-            </div>
-        );
-    }
+    //To do: isApproved.
+    // if (!company.isApproved) {
+    //     return (
+    //         <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6">
+    //             <Card className="max-w-md w-full bg-zinc-900 border border-zinc-800 text-center p-6 rounded-2xl">
+    //                 <div className="space-y-4">
+    //                     <div className="w-12 h-12 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto">
+    //                         <UserGroup className="w-6 h-6" />
+    //                     </div>
+    //                     <h2 className="text-xl font-semibold">Company Approval Pending</h2>
+    //                     <p className="text-sm text-zinc-400">
+    //                         Your company account must be approved before you can post new job listings.
+    //                     </p>
+    //                 </div>
+    //             </Card>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="min-h-screen bg-zinc-950  text-zinc-100 flex items-center justify-center p-4 md:p-8">
@@ -130,7 +125,7 @@ export default function PostJobForm({company}) {
                                 <div className="flex flex-col gap-1.5">
                                     <Label className="text-xs font-medium text-zinc-400">Posting Company</Label>
                                     <Input
-                                        value={recruiterCompany.name}
+                                        value={company.name}
                                         readOnly
                                         className="bg-zinc-800/40 border border-zinc-700/60 text-zinc-300 rounded-lg p-2.5 text-sm cursor-not-allowed"
                                     />

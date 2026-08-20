@@ -173,7 +173,7 @@ export default function CompanyProfile({recruiter, recruiterCompany}) {
     };
 
     // 1. STATE: NO COMPANY REGISTERED
-    if (!company && !isEditing) {
+    if (!company?._id && !isEditing) {
         return (
             <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-8 max-w-2xl mx-auto text-center space-y-4 mt-12 md:mt-30">
                 <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center mx-auto text-zinc-400">
@@ -197,7 +197,7 @@ export default function CompanyProfile({recruiter, recruiterCompany}) {
     }
 
     // 2. STATE: VIEW COMPANY DETAILS
-    if (company && !isEditing) {
+    if (company?._id && !isEditing) {
         return (
             <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-6 max-w-4xl mx-auto space-y-6 mt-12 md:mt-30">
                 <div className="flex justify-between items-start border-b border-zinc-900 pb-4">

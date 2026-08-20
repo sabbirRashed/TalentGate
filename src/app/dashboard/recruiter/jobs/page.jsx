@@ -3,10 +3,12 @@ import { getCompanyJobs } from "@/lib/api/jobs";
 import { Card, Button } from "@heroui/react";
 import { Briefcase, Plus } from "@gravity-ui/icons";
 import Link from "next/link";
+import { getLogedInRecruiterCompany } from "@/lib/api/company";
 
 const RecruiterJobs = async () => {
-  const companyId = "comp_98765";
-  const companyJobs = (await getCompanyJobs(companyId)) || [];
+  const company = await getLogedInRecruiterCompany();
+  const companyJobs = (await getCompanyJobs(company._id)) || [];
+
 
   return (
     <div className="space-y-6 p-4 md:p-8">
