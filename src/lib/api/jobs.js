@@ -7,7 +7,7 @@ export const getAllJobs = async()=>{
 }
 
 export const getJobsById = async(jobId)=>{
-    return serverFetch(`/api/jobs/${jobId}`)
+    return serverFetch(`/api/job/${jobId}`)
 }
 
 export const getCompanyJobs = async(companyId, status="active")=>{
