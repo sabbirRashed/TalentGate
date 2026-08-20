@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Button, Avatar } from '@heroui/react';
 import { MapPin, Briefcase, Display, ArrowRight } from '@gravity-ui/icons';
+import Link from 'next/link';
 
 export default function JobCard({ job = {} }) {
     // Destructure with default fallback values
@@ -73,15 +74,14 @@ export default function JobCard({ job = {} }) {
 
             {/* Footer: Action Link */}
             <Card.Footer className="p-0 mt-6 bg-transparent border-none">
-                <Button
-                    as="a"
+                <Link
                     href={`/jobs/${_id}`}
                     variant="light"
                     className="group inline-flex items-center gap-2 p-0 text-sm font-semibold text-white bg-transparent hover:bg-transparent min-w-0 h-auto"
                 >
                     <span>Apply Now</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Button>
+                </Link>
             </Card.Footer>
         </Card>
     );
