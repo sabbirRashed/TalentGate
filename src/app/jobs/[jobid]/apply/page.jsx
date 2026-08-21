@@ -1,6 +1,8 @@
 import AccessDenied from "@/components/jobs/AccessDeniedUser";
+import { getJobsById } from "@/lib/api/jobs";
 import { getUserSession } from "@/lib/core/session";
 import { redirect } from "next/navigation";
+import JobApply from "./JobApply";
 
 
 const ApplyJobs = async ({ params }) => {
@@ -17,9 +19,12 @@ const ApplyJobs = async ({ params }) => {
         return <AccessDenied user={user}/>
     }
 
+    const job = await getJobsById(jobid);
+
     return (
         <div>
             This is job Apply page.
+            <JobApply job={job}/>
         </div>
     );
 };
