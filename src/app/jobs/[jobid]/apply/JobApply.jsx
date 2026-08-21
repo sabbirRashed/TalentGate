@@ -33,6 +33,7 @@ export default function JobApply({ job = {}, applicant = {} }) {
             jobId: job?._id,
             jobTitle: job?.title,
             companyName: job?.companyName,
+            applicantId: applicant?.id,
             applicantName: applicant?.name,
             applicantEmail: applicant?.email,
             resumeUrl: formData.get("resumeUrl"),

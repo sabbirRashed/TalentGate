@@ -3,6 +3,7 @@ import { getJobsById } from "@/lib/api/jobs";
 import { getUserSession } from "@/lib/core/session";
 import { redirect } from "next/navigation";
 import JobApply from "./JobApply";
+import { getApplicationByApplicant } from "@/lib/api/application";
 
 
 const ApplyJobs = async ({ params }) => {
@@ -19,6 +20,7 @@ const ApplyJobs = async ({ params }) => {
         return <AccessDenied user={user}/>
     }
 
+    const applications = await getApplicationByApplicant(user?.id)
     const job = await getJobsById(jobid);
 
     return (
