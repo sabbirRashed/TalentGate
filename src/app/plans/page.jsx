@@ -10,6 +10,7 @@ export default function PricingPage() {
 
     const seekerPlans = [
         {
+            id: "seeker_free",
             name: "Free",
             price: "$0",
             period: "/forever",
@@ -24,6 +25,7 @@ export default function PricingPage() {
             ],
         },
         {
+            id: "seeker_pro",
             name: "Pro",
             price: "$19",
             period: "/month",
@@ -39,6 +41,7 @@ export default function PricingPage() {
             ],
         },
         {
+            id: "seeker_premium",
             name: "Premium",
             price: "$39",
             period: "/month",
@@ -57,6 +60,7 @@ export default function PricingPage() {
 
     const recruiterPlans = [
         {
+            id: "recruiter_free",
             name: "Free",
             price: "$0",
             period: "/forever",
@@ -71,6 +75,7 @@ export default function PricingPage() {
             ],
         },
         {
+            id: "recruiter_growth",
             name: "Growth",
             price: "$49",
             period: "/month",
@@ -86,6 +91,7 @@ export default function PricingPage() {
             ],
         },
         {
+            id: "recruiter_enterprice",
             name: "Enterprise",
             price: "$149",
             period: "/month",
@@ -212,9 +218,10 @@ export default function PricingPage() {
 
                             <div className="mt-8 pt-4">
                                 <form action="/api/checkout_sessions" method="POST">
+                                    <input type="hidden" name="plan_id" value={plan.id} />
                                     <section>
                                         <button type="submit" role="link"
-                                            className={`px-4 py-3 w-full font-semibold text-sm rounded-xl transition-all ${plan.popular
+                                            className={`px-4 py-3  w-full font-semibold text-sm rounded-xl transition-all ${plan.popular
                                                 ? "bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-lg hover:opacity-90"
                                                 : "bg-white/10 hover:bg-white/15 text-white border border-white/10"
                                                 }`}>
