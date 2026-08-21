@@ -10,6 +10,7 @@ import {
     Check,
 } from "@gravity-ui/icons";
 import { getJobsById } from "@/lib/api/jobs";
+import Link from "next/link";
 
 export default async function JobDetailsPage({ params }) {
     const { jobid } = await params;
@@ -90,14 +91,13 @@ export default async function JobDetailsPage({ params }) {
 
                     {/* Primary Action Button */}
                     <div className="shrink-0">
-                        <Button
-                            as="a"
+                        <Link
                             href={`/jobs/${jobid}/apply`}
                             className="w-full sm:w-auto bg-pink-600 hover:bg-pink-500 text-white font-semibold px-8 py-3 rounded-2xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-pink-600/20"
                         >
                             <span>Apply Now</span>
                             <ArrowRight className="w-4 h-4" />
-                        </Button>
+                        </Link>
                     </div>
                 </div>
 

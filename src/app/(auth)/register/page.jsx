@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button, TextField, Label, Input, FieldError, Spinner, Description, Radio, RadioGroup } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const inputClass =
     "w-full border border-white/15 bg-white/5 focus:border-violet-500 transition-colors";
@@ -13,7 +13,10 @@ const inputClass =
 export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const [formMessage, setFormMessage] = useState(null);
+
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get('redirect') || '/'
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -31,7 +34,7 @@ export default function RegisterPage() {
                 {
                     onSuccess: () => {
                         setFormMessage({ type: "success", text: "Wellcome, Successfully created your account." });
-                        router.push('/')
+                        router.push(redirectTo)
                     },
                     onError: (ctx) => {
                         setFormMessage({ type: "error", text: ctx.error.message || "Something went wrong. Please try again." });

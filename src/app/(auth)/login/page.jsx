@@ -1,21 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button, TextField, Label, Input, FieldError, Spinner } from "@heroui/react";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 
-const inputClass =
-    "w-full border border-white/15 bg-white/5 focus:border-violet-500 transition-colors";
+const inputClass ="w-full border border-white/15 bg-white/5 focus:border-violet-500 transition-colors";
 
 export default function LoginPage() {
-    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [isPending, setIsPending] = useState(false);
     const [formMessage, setFormMessage] = useState(null); // { type: "error" | "success", text: string }
+
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get('redirect') || '/'
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -23,7 +25,7 @@ export default function LoginPage() {
 
         const form = new FormData(e.currentTarget);
         const { email, password } = Object.fromEntries(form.entries());
-        
+
 
         await authClient.signIn.email(
             { email, password },
@@ -31,12 +33,12 @@ export default function LoginPage() {
                 onRequest: () => {
                     setIsPending(true);
                 },
-                onSuccess: async() => {
+                onSuccess: async () => {
                     setIsPending(false);
                     const session = await authClient.getSession();
                     console.log(session, ":sesstion");
                     setFormMessage({ type: "success", text: "Signed in! Redirecting…" });
-                    router.push("/");
+                    router.push(redirectTo);
                     router.refresh();
                 },
                 onError: (ctx) => {
@@ -248,7 +250,7 @@ export default function LoginPage() {
                             <p className="pt-3 text-center text-sm text-gray-400">
                                 Don't have an account?{" "}
                                 <Link
-                                    href="/register"
+                                    href={`/register?redirect=${redirectTo}`}
                                     className="font-semibold text-violet-400 hover:text-violet-300"
                                 >
                                     Create one
