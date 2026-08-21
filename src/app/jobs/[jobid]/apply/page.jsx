@@ -24,7 +24,7 @@ const ApplyJobs = async ({ params }) => {
     return (
         <div>
             This is job Apply page.
-            <JobApply job={job}/>
+            <JobApply job={job} applicant={user}/>
         </div>
     );
 };
