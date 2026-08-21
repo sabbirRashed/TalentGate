@@ -12,9 +12,11 @@ import {
     TextArea,
     Avatar,
     Card,
+    toast,
 } from "@heroui/react";
 import {  Link as LinkIcon, Globe, FileText, ArrowRight, ArrowLeft } from "@gravity-ui/icons";
 import Link from "next/link";
+import { submitApplication } from "@/lib/actions/application";
 
 
 export default function JobApply({ job = {}, applicant = {} }) {
@@ -27,9 +29,10 @@ export default function JobApply({ job = {}, applicant = {} }) {
 
         // Extract form data
         const formData = new FormData(e.currentTarget);
-        const payload = {
-            jobId: job._id,
-            jobTitle: job.title,
+        const submissionData = {
+            jobId: job?._id,
+            jobTitle: job?.title,
+            companyName: job?.companyName,
             applicantName: applicant?.name,
             applicantEmail: applicant?.email,
             resumeUrl: formData.get("resumeUrl"),
@@ -37,13 +40,16 @@ export default function JobApply({ job = {}, applicant = {} }) {
             notes: formData.get("notes"),
         };
 
-        console.log("Submitting application:", payload);
+        console.log("Submitting application:", submissionData);
 
-        // Simulate API request delay
-        await new Promise((resolve) => setTimeout(resolve, 1200));
+       const res = await submitApplication(submissionData);
+       if(res.insertedId){
+        setSubmitted(true);
+       }
+      
 
         setLoading(false);
-        setSubmitted(true);
+        
     };
 
     if (submitted) {
