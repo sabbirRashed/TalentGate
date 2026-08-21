@@ -19,7 +19,7 @@ const navLinks = [
   },
   {
     name: "Pricing",
-    href: "/pricing",
+    href: "/plans",
   },
 ];
 
