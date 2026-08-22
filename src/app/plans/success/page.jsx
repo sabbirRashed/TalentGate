@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@heroui/react'
 import { CircleCheck, ArrowRight, Envelope, ShieldCheck } from '@gravity-ui/icons'
+import { postSubscription } from '@/lib/actions/subscription'
 
 export default async function Success({ searchParams }) {
     const { session_id } = await searchParams
@@ -25,12 +26,14 @@ export default async function Success({ searchParams }) {
     }
 
     if (status === 'complete') {
-
-        // Update the user document about the new plan
         const subsInfo = {
             email: customerEmail,
             planId: metadata.planId,
         }
+
+        // Update the user document about the new plan
+        const result = await postSubscription(subsInfo)
+       
 
         return (
             <section className="min-h-[80vh] bg-[#09090B] text-white flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
@@ -86,7 +89,7 @@ export default async function Success({ searchParams }) {
                         {/* CTA Navigation Buttons */}
                         <div className="pt-4 flex flex-col sm:flex-row gap-3">
                             <Link href="/jobs">
-                                <Button                                 
+                                <Button
                                     size="lg"
                                     className="w-full bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold text-xs rounded-xl shadow-lg hover:opacity-90 transition-opacity"
                                 >
