@@ -12,7 +12,8 @@ export default async function Success({ searchParams }) {
 
     const {
         status,
-        customer_details
+        customer_details,
+        metadata
     } = await stripe.checkout.sessions.retrieve(session_id, {
         expand: ['line_items', 'payment_intent']
     })
@@ -24,6 +25,13 @@ export default async function Success({ searchParams }) {
     }
 
     if (status === 'complete') {
+
+        // Update the user document about the new plan
+        const subsInfo = {
+            email: customerEmail,
+            planId: metadata.planId,
+        }
+
         return (
             <section className="min-h-[80vh] bg-[#09090B] text-white flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
                 <div className="w-full max-w-lg space-y-8 text-center">

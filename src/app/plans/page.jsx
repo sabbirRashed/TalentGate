@@ -91,7 +91,7 @@ export default function PricingPage() {
             ],
         },
         {
-            id: "recruiter_enterprice",
+            id: "recruiter_enterprise",
             name: "Enterprise",
             price: "$149",
             period: "/month",

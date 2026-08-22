@@ -28,9 +28,11 @@ export default function RegisterPage() {
         const formData = Object.fromEntries(form.entries());
         const { name, email, password, role } = formData;
 
+        const plan = role === "seeker"? "seeker_free" : "recruiter_free";
+
         try {
             const { data, error } = await authClient.signUp.email(
-                { name, email, password, role },
+                { name, email, password, role, plan },
                 {
                     onSuccess: () => {
                         setFormMessage({ type: "success", text: "Wellcome, Successfully created your account." });

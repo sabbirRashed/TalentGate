@@ -11,9 +11,11 @@ export async function POST(request) {
         const headersList = await headers()
         const origin = headersList.get('origin')
 
-        // const formData = await request.formData()
-        // const planId = formData.get('plan_id')
-        // console.log('object:', planId);
+        const formData = await request.formData()
+        const planId = formData.get('plan_id')
+        const priceId = PLAN_PRICE_ID[planId]
+
+        // To Do: Plan === seeker_free
 
         const user = await getUserSession();
 
@@ -23,11 +25,12 @@ export async function POST(request) {
             customer_email: user?.email,
             line_items: [
                 {
-                    price: "price_1U6xOfAmpKTH3QDCXI0JvJvW",
+                    price: priceId,
                     quantity: 1,
                 },
             ],
             mode: 'subscription',
+            metadata: { planId },
             success_url: `${origin}/plans/success?session_id={CHECKOUT_SESSION_ID}`,
             // Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
             // integration_identifier: '{{INTEGRATION_ID}}',

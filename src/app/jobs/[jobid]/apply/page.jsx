@@ -6,11 +6,13 @@ import JobApply from "./JobApply";
 import { getApplicationByApplicant } from "@/lib/api/application";
 import Link from "next/link";
 import { Briefcase, ArrowRight, ShieldExclamation, Thunderbolt, CircleCheck } from "@gravity-ui/icons";
+import { getPlanByPlanId } from "@/lib/api/plan";
 
 const ApplyJobs = async ({ params }) => {
     const { jobid } = await params;
 
     const user = await getUserSession();
+    console.log('user:', user.id);
 
     if (!user) {
         redirect(`/login?redirect=/jobs/${jobid}/apply`);
@@ -21,14 +23,13 @@ const ApplyJobs = async ({ params }) => {
     }
 
     const applications = await getApplicationByApplicant(user?.id);
+     console.log('userApplication:', applications);
 
-    // Plan configuration
-    const plan = {
-        name: "Free Plan",
-        maxApplicationPerMonth: 3,
-    };
-
+    // Plan configuration 
+    const plan = await getPlanByPlanId(user.plan || "seeker_free");
     const job = await getJobsById(jobid);
+
+
 
     const appliedCount = applications?.length || 0;
     const remainingApplications = Math.max(0, plan.maxApplicationPerMonth - appliedCount);
@@ -124,7 +125,7 @@ const ApplyJobs = async ({ params }) => {
                         </div>
                         <div className="pt-2">
                             <Link
-                                href="/plan"
+                                href="/plans"
                                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-semibold text-xs px-6 py-3 rounded-xl transition-colors shadow-lg"
                             >
                                 View Pricing Plans
