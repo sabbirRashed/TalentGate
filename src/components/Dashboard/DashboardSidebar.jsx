@@ -1,11 +1,14 @@
 
-import { House, Briefcase, SquarePlus, Magnifier, Envelope, Gear, LayoutSideContentLeft } from "@gravity-ui/icons";
+import { House, Briefcase, SquarePlus, Magnifier, Envelope, Gear, LayoutSideContentLeft, Bookmark, FileText, CreditCard } from "@gravity-ui/icons";
 import { BiBuildings } from "react-icons/bi";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
+import { getUserSession } from "@/lib/core/session";
 
-export function DashboardSidebar() {
-    const navItems = [
+export async function DashboardSidebar() {
+    const user = await getUserSession();
+    console.log(user);
+    const recruiterNavLinks = [
         { icon: House, href: "/dashboard/recruiter", label: "Home" },
         { icon: Briefcase, href: "/dashboard/recruiter/jobs", label: "Jobs" },
         { icon: SquarePlus, href: "/dashboard/recruiter/jobs/new", label: "Post A Job" },
@@ -14,6 +17,24 @@ export function DashboardSidebar() {
         { icon: Envelope, href: "/dashboard/recruiter", label: "Messages" },
         { icon: Gear, href: "/dashboard/recruiter/settings", label: "Settings" },
     ];
+
+    const jobSeekerNavItems = [
+        { icon: House, href: "/dashboard", label: "Dashboard" },
+        { icon: Magnifier, href: "/dashboard/seeker/jobs", label: "Jobs" },
+        { icon: Bookmark, href: "/dashboard/seeker/saved-jobs", label: "Saved Jobs" },
+        { icon: FileText, href: "/dashboard/seeker/applications", label: "Applications" },
+        { icon: CreditCard, href: "/dashboard/seeker/billing", label: "Billing" },
+        { icon: Gear, href: "/dashboard/seeker/settings", label: "Settings" },
+    ];
+
+    const navlinksMap = {
+        seeker: jobSeekerNavItems,
+        recruiter: recruiterNavLinks,
+    }
+
+    const navItems = navlinksMap[user?.role]
+
+
     const sidebarContent = <nav className="flex flex-col gap-1">
         {navItems.map((item) => (
             <Link

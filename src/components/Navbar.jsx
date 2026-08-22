@@ -8,20 +8,8 @@ import { authClient, signOut, } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 
-const navLinks = [
-  {
-    name: "Browse Jobs",
-    href: "/jobs",
-  },
-  {
-    name: "Companies",
-    href: "/companies",
-  },
-  {
-    name: "Pricing",
-    href: "/plans",
-  },
-];
+
+
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +18,35 @@ export default function Navbar() {
 
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
-  // console.log("user:", user);
+
+  const navLinks = [
+    {
+      name: "Browse Jobs",
+      href: "/jobs",
+    },
+    {
+      name: "Companies",
+      href: "/companies",
+    },
+    {
+      name: "Pricing",
+      href: "/plans",
+    },
+  ];
+
+  const dashboardLinks = {
+    seeker: '/dashboard/seeker',
+    recruiter: '/dashboard/recruiter'
+  }
+
+  if (user?.email) {
+    navLinks.push(
+      {
+        name: "Dashboard",
+        href: dashboardLinks[user?.role || 'seeker'],
+      }
+    )
+  }
 
   useEffect(() => {
     if (!user) return;
