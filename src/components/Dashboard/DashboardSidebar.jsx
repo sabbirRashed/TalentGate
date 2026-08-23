@@ -7,7 +7,7 @@ import { getUserSession } from "@/lib/core/session";
 
 export async function DashboardSidebar() {
     const user = await getUserSession();
-    console.log(user);
+
     const recruiterNavLinks = [
         { icon: House, href: "/dashboard/recruiter", label: "Home" },
         { icon: Briefcase, href: "/dashboard/recruiter/jobs", label: "Jobs" },
@@ -19,7 +19,7 @@ export async function DashboardSidebar() {
     ];
 
     const jobSeekerNavItems = [
-        { icon: House, href: "/dashboard", label: "Dashboard" },
+        { icon: House, href: "/dashboard/seeker", label: "Dashboard" },
         { icon: Magnifier, href: "/dashboard/seeker/jobs", label: "Jobs" },
         { icon: Bookmark, href: "/dashboard/seeker/saved-jobs", label: "Saved Jobs" },
         { icon: FileText, href: "/dashboard/seeker/applications", label: "Applications" },

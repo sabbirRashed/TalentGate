@@ -57,14 +57,14 @@ export default function Navbar() {
 
   }, [user])
 
+
   const handleLogOut = async () => {
-    await signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push('/login')
-        }
-      }
-    })
+    const { data, error } = await authClient.signOut()
+
+    if (data.success) {
+      router.refresh();
+      router.push('/login')
+    }
   }
 
   return (

@@ -36,9 +36,11 @@ export default function JobApply({ job = {}, applicant = {} }) {
             applicantId: applicant?.id,
             applicantName: applicant?.name,
             applicantEmail: applicant?.email,
+            status: 'applied',
             resumeUrl: formData.get("resumeUrl"),
             portfolioUrl: formData.get("portfolioUrl"),
             notes: formData.get("notes"),
+            
         };
 
         console.log("Submitting application:", submissionData);
