@@ -35,7 +35,7 @@ const popoverClasses = "bg-zinc-900 border border-zinc-800 rounded-lg p-1 shadow
 const listItemClasses = "px-3 py-2 text-sm hover:bg-zinc-800 rounded cursor-pointer transition-colors text-zinc-300";
 
 export default function CompanyProfile({recruiter, recruiterCompany}) {
-     console.log('userSession:', recruiter);
+    //  console.log('userSession:', recruiter);
     const [company, setCompany] = useState(recruiterCompany);
     const [isEditing, setIsEditing] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -149,13 +149,15 @@ export default function CompanyProfile({recruiter, recruiterCompany}) {
             employeeCount: formValues.employeeCount,
             description: formValues.description,
             logo: logoUrl,
-            status: company?.status || "pending",
+            status: company && company.status? company.status : "Pending",
             recruiterId: recruiter.id,
         };
         setCompany(newCompany);
 
         const payload = await createNewCompany(newCompany);
-        if (payload.inserted) {
+        if (payload.insertedId) {
+            const savedCompany = {...company, _id:payload.insertedId};
+            setCompany(savedCompany);
             toast.success("Company profile created successfully!");
         }
         setIsEditing(false);
