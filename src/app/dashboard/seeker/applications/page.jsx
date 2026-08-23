@@ -59,11 +59,12 @@ export default async function SeekerApplicationPage() {
     return (
         <div className="w-full max-w-6xl mx-auto p-6 bg-zinc-950 min-h-screen text-zinc-100">
             <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 overflow-hidden shadow-2xl backdrop-blur-md">
-                <Table>
+                <Table aria-label="Applications table">
                     <Table.ScrollContainer>
-                        <Table.Content aria-label="Applications table">
+                        <Table.Content>
                             <Table.Header className="border-b border-zinc-800 bg-zinc-900/80">
-                                <Table.Column className="text-zinc-400 font-medium py-4 px-6 text-left">
+                                {/* Added isRowHeader to fix the error */}
+                                <Table.Column isRowHeader className="text-zinc-400 font-medium py-4 px-6 text-left">
                                     Job Title
                                 </Table.Column>
                                 <Table.Column className="text-zinc-400 font-medium py-4 px-6 text-left">
@@ -160,7 +161,7 @@ export default async function SeekerApplicationPage() {
                                     3
                                 </button>
                                 <button className="p-1 rounded text-zinc-400 hover:text-zinc-200">
-                                    ChevronRight width={16} height={16}
+                                    <ChevronRight width={16} height={16} />
                                 </button>
                             </div>
                         </div>

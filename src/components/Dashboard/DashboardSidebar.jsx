@@ -1,6 +1,6 @@
 
-import { House, Briefcase, SquarePlus, Magnifier, Envelope, Gear, LayoutSideContentLeft, Bookmark, FileText, CreditCard } from "@gravity-ui/icons";
-import { BiBuildings } from "react-icons/bi";
+import { House, Briefcase, SquarePlus, Magnifier, Envelope, Gear, LayoutSideContentLeft, Bookmark, FileText, CreditCard, Persons, CircleCheck, ChartColumn } from "@gravity-ui/icons";
+import { BiBuilding, BiBuildings } from "react-icons/bi";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { getUserSession } from "@/lib/core/session";
@@ -27,9 +27,21 @@ export async function DashboardSidebar() {
         { icon: Gear, href: "/dashboard/seeker/settings", label: "Settings" },
     ];
 
+    const adminNavLinks = [
+        { icon: House, href: "/dashboard/admin", label: "Overview" },
+        { icon: Briefcase, href: "/dashboard/admin/jobs", label: "Manage Jobs" },
+        { icon: Persons, href: "/dashboard/admin/users", label: "Manage Users" },
+        { icon: CircleCheck, href: "/dashboard/admin/applications", label: "Applications" },
+        { icon: BiBuilding, href: "/dashboard/admin/companies", label: "Companies" },
+        { icon: ChartColumn, href: "/dashboard/admin/analytics", label: "Analytics" },
+        { icon: FileText, href: "/dashboard/admin/logs", label: "Audit Logs" },
+        { icon: Gear, href: "/dashboard/admin/settings", label: "Settings" },
+    ];
+
     const navlinksMap = {
         seeker: jobSeekerNavItems,
         recruiter: recruiterNavLinks,
+        admin: adminNavLinks
     }
 
     const navItems = navlinksMap[user?.role]

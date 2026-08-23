@@ -1,9 +1,9 @@
 import { requireRole } from '@/lib/core/session';
 import React from 'react';
 
-const RecruiterLayout = async({children}) => {
+const RecruiterDashboardLayout = async({children}) => {
     await requireRole('recruiter');
     return children
 };
 
-export default RecruiterLayout;
+export default RecruiterDashboardLayout;

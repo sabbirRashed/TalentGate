@@ -1,9 +1,9 @@
 import { requireRole } from '@/lib/core/session';
 
 
-const layout = async ({ children }) => {
+const SeekerDashboardLayout = async ({ children }) => {
     await requireRole('seeker');
     return children
 };
 
-export default layout;
+export default SeekerDashboardLayout;
