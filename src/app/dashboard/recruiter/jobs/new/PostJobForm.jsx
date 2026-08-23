@@ -27,6 +27,7 @@ import { useRouter } from 'next/navigation';
 import { postNewjob } from '@/lib/actions/jobs';
 
 export default function PostJobForm({ company }) {
+    console.log('company: ', company);
 
     const [isRemote, setIsRemote] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,7 +79,7 @@ export default function PostJobForm({ company }) {
     };
 
     // To do: isApproved.
-    if (!company.isApproved) {
+    if (company.status !== 'Approved') {
         return (
             <div className="min-h-screen bg-zinc-950 text-white  p-6">
                 <Card className="max-w-md mx-auto mt-15 md:mt-30 w-full bg-zinc-900 border border-zinc-800 text-center p-6 rounded-2xl">
