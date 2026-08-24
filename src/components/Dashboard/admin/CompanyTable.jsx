@@ -73,8 +73,8 @@ export default function CompanyTable({ companies = [] }) {
         <div className="rounded-xl border border-zinc-800/80 bg-[#161618] overflow-hidden shadow-2xl">
             <Table aria-label="Company review table">
                 <Table.ScrollContainer>
-                    <Table.Content>
-                        <Table.Header className="border-b border-zinc-800/80 bg-[#1a1a1c]">
+                    <Table.Content className='p-2'>
+                        <Table.Header className="border-b border-zinc-800/80 bg-[#1b1b1d] ">
                             <Table.Column isRowHeader className="text-zinc-400 font-medium py-4 px-6 text-left text-sm">
                                 Company Name
                             </Table.Column>
@@ -83,6 +83,9 @@ export default function CompanyTable({ companies = [] }) {
                             </Table.Column>
                             <Table.Column className="text-zinc-400 font-medium py-4 px-6 text-left text-sm">
                                 Industry
+                            </Table.Column>
+                            <Table.Column className="text-zinc-400 font-medium py-4 px-6 text-left text-sm">
+                                Job Count
                             </Table.Column>
                             <Table.Column className="text-zinc-400 font-medium py-4 px-6 text-left text-sm">
                                 Status
@@ -136,6 +139,13 @@ export default function CompanyTable({ companies = [] }) {
                                         <Table.Cell className="py-4 px-6">
                                             <span className="px-2.5 py-1 text-xs rounded-full bg-zinc-800/60 text-zinc-400 border border-zinc-700/40 capitalize">
                                                 {company.industry || 'Technology'}
+                                            </span>
+                                        </Table.Cell>
+                                        
+                                        {/* Jobs Count */}
+                                        <Table.Cell className="py-4 px-6">
+                                            <span className="px-2.5 py-1 text-xs rounded-full bg-zinc-800/60 text-zinc-400 border border-zinc-700/40 capitalize">
+                                                {company.jobCount || 0}
                                             </span>
                                         </Table.Cell>
 
