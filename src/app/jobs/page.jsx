@@ -1,9 +1,13 @@
 import { getAllJobs } from "@/lib/api/jobs";
 import JobListingContainer from "@/components/jobs/JobListingContainer";
 
-export default async function JobsPage() {
-    const jobs = (await getAllJobs()) || [];
-    console.log(jobs);
+export default async function JobsPage({searchParams}) {
+    const search_params = await searchParams;
+
+    const query = new URLSearchParams(search_params).toString()
+    console.log('search_params:', query);
+
+    const {jobs, totalData} = (await getAllJobs(query)) || [];
 
     return (
         <div className="bg-zinc-950 text-zinc-100 min-h-screen px-4 py-12 sm:px-8 lg:px-12">
@@ -44,7 +48,7 @@ export default async function JobsPage() {
 
                 {/* Interactive Client-side Filter & Grid Section */}
                 <main>
-                    <JobListingContainer jobs={jobs} />
+                    <JobListingContainer search_params={search_params} jobs={jobs} totalData={totalData} />
                 </main>
 
             </div>
