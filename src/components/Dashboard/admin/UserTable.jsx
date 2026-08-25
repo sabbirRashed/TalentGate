@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Table, Avatar, Button } from '@heroui/react';
+import { updateUserRole } from '@/lib/actions/users';
 
 // Date formatter helper: converts ISO string to "MMM DD, YYYY"
 const formatDate = (dateString) => {
@@ -23,23 +24,14 @@ const getInitials = (name = '') => {
         .toUpperCase();
 };
 
-export default function UserTable({ users: initialUsers = [] }) {
-    // Store local state for users so role and status toggles update instantly in UI
-    const [users, setUsers] = useState(
-        initialUsers.map((user) => ({
-            ...user,
-            status: 'active', // Default status state since it's missing from DB doc
-        }))
-    );
+export default function UserTable({ users }) {
 
     // Toggle user role (user -> recruiter -> admin -> user)
-    const handleRoleToggle = (userId, targetRole) => {
-        setUsers((prevUsers) =>
-            prevUsers.map((u) =>
-                u._id === userId ? { ...u, role: targetRole } : u
-            )
-        );
-        console.log(`Updated user ${userId} role to: ${targetRole}`);
+    const handleRoleToggle = async(userId, targetRole) => {
+
+        console.log('userId', userId);
+        const data = await updateUserRole(userId, targetRole);
+        console.log(`Updated user: ${data}`);
     };
 
     // Toggle active/suspended state
@@ -174,7 +166,7 @@ export default function UserTable({ users: initialUsers = [] }) {
                                                     <Button
                                                         size="sm"
                                                         variant="flat"
-                                                        onPress={() => handleRoleToggle(user._id, 'seeker')}
+                                                        onPress={() => handleRoleToggle(user.id, 'seeker')}
                                                         className="text-xs font-medium bg-zinc-800/60 text-zinc-300 border border-zinc-700/50 hover:bg-zinc-700/60 min-w-0 h-auto py-1 px-2.5 rounded-md"
                                                     >
                                                         Make Seeker
