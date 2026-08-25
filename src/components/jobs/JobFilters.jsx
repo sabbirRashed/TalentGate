@@ -10,10 +10,17 @@ import {
 } from "@heroui/react";
 import { Magnifier, ChevronDown } from "@gravity-ui/icons";
 
-export default function JobFilters({ filters, onFilterChange }) {
-    const handleInputChange = (field, value) => {
-        onFilterChange({ ...filters, [field]: value });
-    };
+export default function JobFilters({
+    searchQuery,
+    setSearchQuery,
+    category,
+    setCategory,
+    jobType,
+    setJobType,
+    isRemote,
+    setIsRemote
+}) {
+  
 
     return (
         <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 sm:p-6 mb-8 space-y-4">
@@ -30,8 +37,8 @@ export default function JobFilters({ filters, onFilterChange }) {
                         <InputGroup.Input
                             type="text"
                             placeholder="Title, company, or city..."
-                            value={filters.search}
-                            onChange={(e) => handleInputChange("search", e.target.value)}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             className="bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none w-full"
                         />
                     </InputGroup>
@@ -39,9 +46,9 @@ export default function JobFilters({ filters, onFilterChange }) {
 
                 {/* Category Select */}
                 <Select
-                    className="flex flex-col gap-1.5"
-                    selectedKey={filters.category}
-                    onSelectionChange={(key) => handleInputChange("category", key)}
+                    className="flex group flex-col gap-1.5"
+                    selectedKey={category}
+                    onSelectionChange={(key) => setCategory(key)}
                 >
                     <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
                         Category
@@ -52,22 +59,25 @@ export default function JobFilters({ filters, onFilterChange }) {
                             <ChevronDown className="w-4 h-4" />
                         </Select.Indicator>
                     </Select.Trigger>
-                    <Select.Popover className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl p-1 mt-1 z-50 min-w-[200px]">
+                    <Select.Popover className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl p-1 mt-1 z-50 group:min-w-full">
                         <ListBox className="flex flex-col gap-1">
-                            <ListBox.Item
+                            <ListBox.Item                              
                                 id="all"
+                                textValue="All Categories"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>All Categories</Label>
                             </ListBox.Item>
                             <ListBox.Item
                                 id="software"
+                                textValue="Software Engineering"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>Software Engineering</Label>
                             </ListBox.Item>
                             <ListBox.Item
                                 id="mobile-development"
+                                 textValue="Mobile Development"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>Mobile Development</Label>
@@ -78,9 +88,9 @@ export default function JobFilters({ filters, onFilterChange }) {
 
                 {/* Job Type Select */}
                 <Select
-                    className="flex flex-col gap-1.5"
-                    selectedKey={filters.type}
-                    onSelectionChange={(key) => handleInputChange("type", key)}
+                    className="flex flex-col gap-1.5 group"
+                    selectedKey={jobType}
+                    onSelectionChange={(key) => setJobType(key)}
                 >
                     <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
                         Job Type
@@ -91,28 +101,32 @@ export default function JobFilters({ filters, onFilterChange }) {
                             <ChevronDown className="w-4 h-4" />
                         </Select.Indicator>
                     </Select.Trigger>
-                    <Select.Popover className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl p-1 mt-1 z-50 min-w-[200px]">
+                    <Select.Popover className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl p-1 mt-1 z-50 group:min-w-full">
                         <ListBox className="flex flex-col gap-1">
                             <ListBox.Item
                                 id="all"
+                                textValue="All Types"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>All Types</Label>
                             </ListBox.Item>
                             <ListBox.Item
                                 id="full-time"
+                                textValue="Full Time"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>Full Time</Label>
                             </ListBox.Item>
                             <ListBox.Item
                                 id="part-time"
+                                textValue="Part Time"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>Part Time</Label>
                             </ListBox.Item>
                             <ListBox.Item
                                 id="contract"
+                                textValue="Contract"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>Contract</Label>
@@ -123,9 +137,9 @@ export default function JobFilters({ filters, onFilterChange }) {
 
                 {/* Remote Preference Select */}
                 <Select
-                    className="flex flex-col gap-1.5"
-                    selectedKey={filters.isRemote}
-                    onSelectionChange={(key) => handleInputChange("isRemote", key)}
+                    className="flex flex-col gap-1.5 group"
+                    selectedKey={isRemote}
+                    onSelectionChange={(key) => setIsRemote(key)}
                 >
                     <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
                         Work Place
@@ -136,22 +150,25 @@ export default function JobFilters({ filters, onFilterChange }) {
                             <ChevronDown className="w-4 h-4" />
                         </Select.Indicator>
                     </Select.Trigger>
-                    <Select.Popover className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl p-1 mt-1 z-50 min-w-[200px]">
+                    <Select.Popover className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-xl p-1 mt-1 z-50 group:min-w-full">
                         <ListBox className="flex flex-col gap-1">
                             <ListBox.Item
                                 id="all"
+                                textValue="All Locations"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>All Locations</Label>
                             </ListBox.Item>
                             <ListBox.Item
                                 id="remote"
+                                textValue="Remote Only"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>Remote Only</Label>
                             </ListBox.Item>
                             <ListBox.Item
                                 id="onsite"
+                                textValue="On-site Only"
                                 className="px-3 py-2 rounded-xl text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors"
                             >
                                 <Label>On-site Only</Label>

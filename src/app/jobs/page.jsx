@@ -1,8 +1,9 @@
 import { getAllJobs } from "@/lib/api/jobs";
-import JobClientWrapper from "@/components/jobs/JobClientWrapper";
+import JobListingContainer from "@/components/jobs/JobListingContainer";
 
 export default async function JobsPage() {
     const jobs = (await getAllJobs()) || [];
+    console.log(jobs);
 
     return (
         <div className="bg-zinc-950 text-zinc-100 min-h-screen px-4 py-12 sm:px-8 lg:px-12">
@@ -43,7 +44,7 @@ export default async function JobsPage() {
 
                 {/* Interactive Client-side Filter & Grid Section */}
                 <main>
-                    <JobClientWrapper initialJobs={jobs} />
+                    <JobListingContainer jobs={jobs} />
                 </main>
 
             </div>
