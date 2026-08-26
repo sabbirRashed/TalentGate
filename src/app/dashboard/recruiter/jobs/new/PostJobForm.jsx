@@ -27,7 +27,7 @@ import { useRouter } from 'next/navigation';
 import { postNewjob } from '@/lib/actions/jobs';
 
 export default function PostJobForm({ company }) {
-    console.log('company: ', company);
+    // console.log('company: ', company);
 
     const [isRemote, setIsRemote] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);

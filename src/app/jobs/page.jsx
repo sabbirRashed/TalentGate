@@ -39,7 +39,7 @@ export default async function JobsPage({searchParams}) {
                                     Active Openings
                                 </span>
                                 <span className="text-xl font-bold text-white">
-                                    {jobs.length} {jobs.length === 1 ? 'Position' : 'Positions'}
+                                    {jobs?.length} {jobs?.length === 1 ? 'Position' : 'Positions'}
                                 </span>
                             </div>
                         </div>
